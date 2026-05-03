@@ -77,4 +77,43 @@ class User extends Model
         $stmt = $this->db->prepare('INSERT INTO Profiles (user_id) VALUES (:user_id)');
         $stmt->execute(['user_id' => $userId]);
     }
+
+    public function getAll(): array
+    {
+        $sql = 'SELECT u.id, u.email, u.role, u.status, u.created_at, p.full_name, p.phone
+                FROM Users u
+                LEFT JOIN Profiles p ON u.id = p.user_id 
+                ORDER BY u.created_at DESC';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function updateAccount(string $id, array $data): bool
+    {
+        $sql = 'UPDATE Users 
+                SET email = :email,
+                    role = :role,
+                    status = :status
+                WHERE id = :id';
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            'id' =>  $id,
+            'email' => $data['email'],
+            'role' => $data['role'],
+            'status' => $data['status']
+        ]);
+    }
+    
+    public function delete(string $id): bool
+    {
+        $stmtProfile = $this->db->prepare('DELETE FROM Profiles WHERE user_id = :id');
+        $stmtProfile->execute(['id' => $id]);
+
+        $sql = 'DELETE FROM Users WHERE id = :id';
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute(['id'=>$id]);
+    }
+    
 }

@@ -15,3 +15,12 @@ $router->get('/profile', 'ProfileController@show');
 $router->post('/profile', 'ProfileController@update');
 
 $router->get('/admin', 'AdminController@dashboard');
+
+
+
+$router->get('/admin/users', 'AdminController@index');
+$router->get('/admin/users/add', 'AdminController@add');
+$router->post('/admin/users/add', 'AdminController@add');
+$router->get('/admin/users/edit', 'AdminController@edit');
+$router->post('/admin/users/edit', 'AdminController@edit');
+$router->get('/admin/users/delete', 'AdminController@delete');
