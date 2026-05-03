@@ -16,6 +16,7 @@
             <nav>
                 <a href="/whey_web/">Home</a>
                 <a href="/whey_web/about">About</a>
+                <a href="/whey_web/products">Products</a>
                 <?php if ($currentUser === null): ?>
                     <a href="/whey_web/register">Register</a>
                     <a href="/whey_web/login">Login</a>
@@ -23,6 +24,11 @@
                     <a href="/whey_web/profile">Profile</a>
                     <?php if (($currentUser['role'] ?? 'member') === 'admin'): ?>
                         <a href="/whey_web/admin">Admin</a>
+                        <a href="/whey_web/admin/products">Manage Products</a>
+                        <a href="/whey_web/admin/orders">Manage Orders</a>
+                    <?php elseif (($currentUser['role'] ?? 'member') === 'member'): ?>
+                        <a href="/whey_web/orders">My Orders</a>
+                        <a href="/whey_web/cart">Cart</a>
                     <?php endif; ?>
                     <form class="inline-form" method="post" action="/whey_web/logout">
                         <button type="submit" class="link-button">Logout</button>
