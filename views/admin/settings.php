@@ -7,33 +7,32 @@
                 <h4 class="header-title">Cấu hình thông tin Website</h4>
                 <p class="text-muted font-14 mb-4">Thay đổi thông tin liên hệ và giới thiệu chung của công ty tại đây.</p>
                 
-                <!-- Action trỏ về route xử lý update trong AdminController -->
                 <form action="/whey_web/admin/update-settings" method="POST" enctype="multipart/form-data">
                     
                     <div class="form-group mb-3">
                         <label for="phone" class="col-form-label">Số điện thoại công ty</label>
-                        <!-- Dùng cú pháp ?? '' để tránh lỗi nếu key không tồn tại trong DB -->
+                        <!-- Bảo mật: Dùng htmlspecialchars khi hiển thị dữ liệu từ DB -->
                         <input class="form-control" type="text" name="site_phone" 
-                            value="<?php echo $settings['site_phone'] ?? ''; ?>" required>
+                            value="<?php echo htmlspecialchars($settings['site_phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
                     </div>
                     
                     <div class="form-group mb-3">
                         <label for="address" class="col-form-label">Địa chỉ công ty</label>
                         <input class="form-control" type="text" name="site_address" 
-                             value="<?php echo $settings['site_address'] ?? ''; ?>" required>
+                             value="<?php echo htmlspecialchars($settings['site_address'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" required>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="intro" class="col-form-label">Đoạn giới thiệu ngắn (Trang chủ)</label>
-                        <textarea class="form-control" name="site_intro" rows="4"><?php echo $settings['site_intro'] ?? ''; ?></textarea>
+                        <textarea class="form-control" name="site_intro" rows="4"><?php echo htmlspecialchars($settings['site_intro'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
                     </div>
 
                     <div class="form-group mb-3">
                         <label class="col-form-label">Logo website hiện tại</label>
                         <div class="mb-3 p-2 border inline-block" style="width: fit-content; background: #f8f9fa;">
-                            <!-- Hiển thị ảnh từ đường dẫn lưu trong DB -->
                             <?php if (!empty($settings['site_logo'])): ?>
-                                <img src="<?php echo $settings['site_logo']; ?>" width="150" alt="Current Logo">
+                                <!-- Sửa đường dẫn: Nối folder uploads với tên file lưu trong DB -->
+                                <img src="/whey_web/public/uploads/<?php echo htmlspecialchars($settings['site_logo'], ENT_QUOTES, 'UTF-8'); ?>" width="150" alt="Current Logo">
                             <?php else: ?>
                                 <p class="text-danger">Chưa có logo</p>
                             <?php endif; ?>

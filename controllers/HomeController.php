@@ -20,8 +20,8 @@ class HomeController extends Controller
 
     $this->view('home', [
         'title' => 'FITWHEY - Thực phẩm thể hình chính hãng',
-        'settings' => $settings // <--- Giờ thì View mới hiểu được $settings['site_phone']
-    ]);
+        'settings' => $settings
+    ], 'main');
 }
 
     public function about(): void
