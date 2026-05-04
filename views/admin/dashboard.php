@@ -24,4 +24,15 @@
     </div>
 
     <div class="admin-dashboard__panel"></div>
+    <hr>
+    <div class="admin-nav-actions" style="padding: 20px 0; display: flex; gap: 15px; flex-wrap: wrap;">
+        <a href="admin/users" style="padding: 12px 20px; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+            <span>👥</span> Quản lý danh sách User
+        </a>
+
+        <a href="admin/users/add" style="padding: 12px 20px; background-color: #27AE60; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+            <span>➕</span> Thêm người dùng mới
+        </a>
+
+    </div>
 </section>

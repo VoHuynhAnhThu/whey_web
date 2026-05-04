@@ -33,3 +33,12 @@ $router->get('/admin/comments', 'AdminNewsController@commentsList');
 $router->post('/admin/comments/approve', 'AdminNewsController@approveComment');
 $router->post('/admin/comments/reject', 'AdminNewsController@rejectComment');
 $router->post('/admin/comments/delete', 'AdminNewsController@deleteComment');
+
+
+
+$router->get('/admin/users', 'AdminController@index');
+$router->get('/admin/users/add', 'AdminController@add');
+$router->post('/admin/users/add', 'AdminController@add');
+$router->get('/admin/users/edit', 'AdminController@edit');
+$router->post('/admin/users/edit', 'AdminController@edit');
+$router->get('/admin/users/delete', 'AdminController@delete');
