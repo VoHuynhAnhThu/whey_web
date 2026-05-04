@@ -80,4 +80,26 @@ class AdminController extends Controller
 
         return $this->view('/admin/users/edit', ['user' => $user]);
     }
+
+    public function editAbout(): void
+    {
+        $settingModel = new Settings();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settingsData = $_POST['settings'] ?? [];
+
+            foreach ($settingsData as $key => $value) {
+                $settingModel->updateValue($key, $value);
+            }
+            header('Location: /whey_web/admin/settings/about?status=success');
+            exit;
+        }
+
+        $aboutData = $settingModel->getByPage('about');
+
+        $this->view('admin/settings/about', [
+            'title' => 'Quản lý trang Giới thiệu - FITWHEY',
+            'about' => $aboutData
+        ]);
+    }
 }

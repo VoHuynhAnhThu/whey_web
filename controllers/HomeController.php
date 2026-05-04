@@ -14,9 +14,14 @@ class HomeController extends Controller
 
     public function about(): void
     {
+        $settingModel = new Settings();
+        $aboutData = $settingModel->getByPage('about');
+
         $this->view('public/about', [
             'title' => 'About - FITWHEY',
-            'heading' => 'About This Project',
+            'heading' => $aboutData['about_title'] ?? 'About us',
+            'content' => $aboutData['about_content'] ?? 'Nội dung đang cập nhật...',
+            'image' => $aboutData['about_image'] ?? ''
         ]);
     }
 }
