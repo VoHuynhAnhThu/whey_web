@@ -19,4 +19,12 @@ class HomeController extends Controller
             'heading' => 'About This Project',
         ]);
     }
+
+    public function contact(): void
+    {
+        $this->view('public/contact', [
+            'title' => 'Contact - FITWHEY',
+            'heading' => 'Contact Us',
+        ]);
+    }
 }

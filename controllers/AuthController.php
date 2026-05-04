@@ -13,7 +13,7 @@ class AuthController extends Controller
             'error' => Session::flash('error'),
             'success' => Session::flash('success'),
             'old' => Session::get('old_register', []),
-        ]);
+        ], 'auth');
 
         Session::remove('old_register');
     }
@@ -75,7 +75,7 @@ class AuthController extends Controller
             'error' => Session::flash('error'),
             'success' => Session::flash('success'),
             'old' => Session::get('old_login', []),
-        ]);
+        ], 'auth');
 
         Session::remove('old_login');
     }

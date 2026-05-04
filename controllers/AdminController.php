@@ -11,6 +11,6 @@ class AdminController extends Controller
         $this->view('admin/dashboard', [
             'title' => 'Admin Dashboard - FITWHEY',
             'heading' => 'Admin Dashboard Placeholder',
-        ]);
+        ], 'admin');
     }
 }
