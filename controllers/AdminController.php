@@ -15,69 +15,115 @@ class AdminController extends Controller
     public function dashboard(): void
     {
         $this->view('admin/dashboard', [
-            'title' => 'Admin Dashboard - FITWHEY',
-            'heading' => 'Admin Dashboard Placeholder',
-        ], 'admin');
+        'title' => 'Admin Dashboard - FITWHEY',
+        'heading' => 'Admin Dashboard Placeholder',
+    ], 'admin');
     }
 
-    public function index()
+    public function settings(): void
     {
-        $allUsers = $this->userModel->getAll();
+        $this->requireRole('admin'); 
+        $db = Database::connection(); 
+        $settingModel = new SettingModel($db); 
+
+        $rawSettings = $settingModel->getAllSettings(); 
+        $settings = [];
+        foreach ($rawSettings as $row) {
+            $settings[$row['key']] = $row['value'];
+        }
+
+        $this->view('admin/settings', [
+            'title' => 'Cài đặt hệ thống - FITWHEY',
+            'settings' => $settings 
+        ], '');
+    }
+
+    public function updateSettings(): void {
+        $this->requireRole('admin');
+        $db = Database::connection();
+        $model = new SettingModel($db);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // 1. Cập nhật thông tin văn bản
+            foreach ($_POST as $key => $value) {
+                if (str_starts_with($key, 'site_')) {
+                    // Bảo mật: Lọc dữ liệu đầu vào
+                    $cleanValue = htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+                    $model->updateSetting($key, $cleanValue);
+                }
+            }
+
+            // 2. Xử lý upload Logo (Chỉ lưu tên file)
+            if (isset($_FILES['site_logo']) && $_FILES['site_logo']['error'] === UPLOAD_ERR_OK) {
+                $fileTmpPath = $_FILES['site_logo']['tmp_name'];
+                $fileName = $_FILES['site_logo']['name'];
+                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                if (in_array($fileExtension, $allowedExtensions)) {
+                    $newFileName = 'logo_' . time() . '.' . $fileExtension;
+                    $uploadFileDir = './public/uploads/';
+                    $dest_path = $uploadFileDir . $newFileName;
+
+                    if (!is_dir($uploadFileDir)) {
+                        mkdir($uploadFileDir, 0777, true);
+                    }
+
+                    if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                        $model->updateSetting('site_logo', $newFileName);
+                    }
+                }
+            }
+            
+            $this->redirect('/whey_web/admin/settings');
+        }
+    }
+
+    public function listContacts(): void
+    {
+        $this->requireRole('admin');
+        $db = Database::connection();
+        $model = new ContactModel($db);
         
-        return $this->view('admin/users/index', [
-            'users' => $allUsers,
-            'title' => 'Quản lý người dùng'
-        ]);
+        $limit = 5; 
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        
+        $offset = ($page - 1) * $limit;
+        $totalContacts = $model->countAll();
+        $totalPages = ceil($totalContacts / $limit);
+        $contacts = $model->getPaginatedContacts($limit, $offset);
+
+        $this->view('admin/contacts/index', [
+            'title' => 'Quản lý liên hệ - FITWHEY',
+            'contacts' => $contacts,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
+        ], '');
     }
 
-    public function add()
+    public function updateContactStatus(): void
     {
+        $this->requireRole('admin');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $role = $_POST['role'] ?? 'member';
-
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-            $this->userModel->create($email, $passwordHash, $role);
-            header('Location: /whey_web/admin/users/add');
-            exit;
+            $id = $_POST['id'] ?? null;
+            $status = $_POST['status'] ?? 'read';
+            $db = Database::connection();
+            $model = new ContactModel($db);
+            $model->updateStatus((int)$id, $status);
+            $this->redirect('/whey_web/admin/contacts');
         }
-
-        return $this->view('admin/users/add', ['title' => 'Thêm người dùng mới']);
     }
 
-    public function delete()
+    public function deleteContact(): void
     {
-        $id = $_GET['id'] ?? '';
-        if ($id) {
-            $this->userModel->delete($id);
-        }
-        header('Location: /whey_web/admin/users');
-        exit;
-    }
-
-    public function edit() 
-    {
-        $id = $_GET['id'] ?? '';
-        $user = $this->userModel->findById($id);
-
-        if (!$user) {
-            header('Location: /admin/users');
-            exit;
-        }
-
+        $this->requireRole('admin');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'email' => $_POST['email'],
-                'role' => $_POST['role'],
-                'status' => $_POST['status']
-            ];
-            $this->userModel->updateAccount($id, $data);
-            header('Location: /whey_web/admin/users');
-            exit;
+            $id = $_POST['id'] ?? null;
+            $db = Database::connection();
+            $model = new ContactModel($db);
+            $model->deleteContact((int)$id);
+            $this->redirect('/whey_web/admin/contacts');
         }
-
-        return $this->view('/admin/users/edit', ['user' => $user]);
     }
 }

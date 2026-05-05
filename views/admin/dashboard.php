@@ -1,38 +1,33 @@
-<section class="admin-dashboard">
-    <div class="admin-dashboard__hero">
-        <h2><?= htmlspecialchars($heading ?? 'Admin Dashboard', ENT_QUOTES, 'UTF-8') ?></h2>
-        <p>Quản lý tin tức, bình luận và nội dung hệ thống theo phong cách FITWHEY.</p>
+<div class="main-content-inner">
+    <div class="row">
+        <!-- Ô thống kê Liên hệ -->
+        <div class="col-md-6 mt-5 mb-3">
+            <div class="card">
+                <div class="seo-fact sbg1">
+                    <div class="p-4 d-flex justify-content-between align-items-center">
+                        <div class="seofact-icon"><i class="ti-email"></i></div>
+                        <h2>Liên hệ mới</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Ô thống kê Cài đặt -->
+        <div class="col-md-6 mt-md-5 mb-3">
+            <div class="card">
+                <div class="seo-fact sbg2">
+                    <div class="p-4 d-flex justify-content-between align-items-center">
+                        <div class="seofact-icon"><i class="ti-settings"></i></div>
+                        <h2>Cài đặt hệ thống</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="admin-dashboard__grid">
-        <div class="admin-stat-card">
-            <span>Tin tức</span>
-            <strong>Quản lý bài viết</strong>
-        </div>
-        <div class="admin-stat-card">
-            <span>Bình luận</span>
-            <strong>Duyệt nội dung</strong>
-        </div>
-        <div class="admin-stat-card">
-            <span>Liên hệ</span>
-            <strong>Hỗ trợ khách hàng</strong>
-        </div>
-        <div class="admin-stat-card">
-            <span>Giao diện</span>
-            <strong>Tùy chỉnh layout</strong>
+    <div class="card mt-5">
+        <div class="card-body text-center">
+            <h4 class="header-title">Chào mừng Admin Nguyễn Chí Thanh!</h4>
+            <p>Hệ thống đã sẵn sàng. Bạn có thể quản lý <b>Logo, Hotline</b> hoặc xem <b>Lời nhắn khách hàng</b> ở menu bên trái.</p>
         </div>
     </div>
-
-    <div class="admin-dashboard__panel"></div>
-    <hr>
-    <div class="admin-nav-actions" style="padding: 20px 0; display: flex; gap: 15px; flex-wrap: wrap;">
-        <a href="admin/users" style="padding: 12px 20px; background-color: #4A90E2; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
-            <span>👥</span> Quản lý danh sách User
-        </a>
-
-        <a href="admin/users/add" style="padding: 12px 20px; background-color: #27AE60; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
-            <span>➕</span> Thêm người dùng mới
-        </a>
-
-    </div>
-</section>
+</div>
