@@ -22,7 +22,34 @@ $router->post('/news/comment', 'NewsController@addComment');
 
 // Admin News & Comments routes
 $router->get('/admin', 'AdminController@dashboard');
-$router->get('/admin/settings', 'AdminController@settings');
+
+//Trang danh sách sản phẩm
+$router->get('/products', 'ProductController@index');
+//Trang chi tiết sản phẩm và Giỏ hàng
+$router->get('/product', 'ProductController@show');
+$router->get('/cart', 'CartController@index');
+$router->post('/cart/add', 'CartController@add');
+$router->post('/cart/update', 'CartController@update');
+$router->post('/cart/remove', 'CartController@remove');
+$router->post('/cart/checkout', 'CartController@checkout');
+
+// --- QUẢN LÝ ĐƠN HÀNG CHO USER ---
+$router->get('/orders', 'OrderController@index');
+$router->get('/orders/detail', 'OrderController@detail');
+
+// --- QUẢN LÝ SẢN PHẨM ---
+$router->get('/admin/products', 'AdminProductController@index');
+$router->get('/admin/products/create', 'AdminProductController@create');
+$router->post('/admin/products/store', 'AdminProductController@store');
+
+$router->get('/admin/products/edit', 'AdminProductController@edit');
+$router->post('/admin/products/update', 'AdminProductController@update');
+$router->post('/admin/products/delete', 'AdminProductController@delete');
+
+// --- QUẢN LÝ ĐƠN HÀNG ---
+$router->get('/admin/orders', 'AdminOrderController@index');
+$router->post('/admin/orders/update-status', 'AdminOrderController@updateStatus');
+$router->get('/admin/orders/detail/{id}', 'AdminOrderController@detail');$router->get('/admin/settings', 'AdminController@settings');
 $router->post('/admin/update-settings', 'AdminController@updateSettings');
 $router->post('/admin/settings/update', 'AdminController@updateSettings');
 $router->get('/admin/contacts', 'AdminController@listContacts');
