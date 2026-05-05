@@ -102,4 +102,41 @@ class AdminController extends Controller
             'about' => $aboutData
         ]);
     }
+
+    public function manageFaqs(): void {
+    $questionModel = new Question();
+    $this->view('admin/faqs/index', [
+        'title' => 'Quản lý câu hỏi',
+        'questions' => $questionModel->getAllWithAnswers()
+    ]);
+}
+
+    public function replyFaq(): void {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $answerModel = new Answer();
+            $answerModel->create([
+                'question_id' => $_POST['question_id'],
+                'user_id' => $_SESSION['user_id'],
+                'body' => $_POST['answer_body']
+            ]);
+            header('Location: /whey_web/admin/faqs?status=replied');
+            exit;
+        }
+    }
+
+    public function showReplyForm(): void {
+    $id = $_GET['id'] ?? '';
+    $questionModel = new Question();
+    $question = $questionModel->getById($id);
+
+    if (!$question) {
+        header('Location: /whey_web/admin/faqs');
+        exit;
+    }
+
+    $this->view('admin/faqs/reply', [
+        'title' => 'Phản hồi câu hỏi',
+        'question' => $question
+    ]);
+}
 }

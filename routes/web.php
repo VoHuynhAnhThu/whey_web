@@ -25,4 +25,17 @@ $router->get('/admin/users/delete', 'AdminController@delete');
 
 $router->get('/admin/settings/about', 'AdminController@editAbout');
 $router->post('/admin/settings/about', 'AdminController@editAbout');
+
+
+$router->get('/faq', 'HomeController@faq');
+$router->post('/faq/ask', 'HomeController@ask');
+
+$router->get('/admin/faqs', 'AdminController@manageFaqs');
+$router->post('/admin/faqs/reply', 'AdminController@replyFaq');
+
+
+$router->get('/admin/faqs/reply', 'AdminController@showReplyForm'); 
+
+
+$router->post('/admin/faqs/reply', 'AdminController@replyFaq');
 ?>

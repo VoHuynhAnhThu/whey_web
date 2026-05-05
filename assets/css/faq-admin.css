@@ -1,0 +1,42 @@
+
+.faq-preview-card {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #4A90E2; 
+}
+
+.question-content {
+    margin-top: 10px;
+    color: #555;
+    line-height: 1.6;
+}
+
+
+.faq-reply-form .form-group {
+    margin-bottom: 20px;
+}
+
+.faq-reply-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    margin-left: 15px;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.btn-cancel:hover {
+    color: #e74c3c; 
+    text-decoration: underline;
+}

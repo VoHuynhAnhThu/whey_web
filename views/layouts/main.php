@@ -16,6 +16,8 @@
             <nav>
                 <a href="/whey_web/">Home</a>
                 <a href="/whey_web/about">About</a>
+                <a href="/whey_web/faq">FAQs</a> 
+
                 <?php if ($currentUser === null): ?>
                     <a href="/whey_web/register">Register</a>
                     <a href="/whey_web/login">Login</a>
