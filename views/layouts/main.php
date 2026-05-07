@@ -52,9 +52,11 @@
         <div class="container">
             <h1 class="brand">FITWHEY</h1>
             <nav>
-                <a href="/whey_web/">Home</a>
+                <a href="/whey_web/">Trang chủ</a>
                 <a href="/whey_web/about">About</a>
-                <a href="/whey_web/products">Products</a>
+                <a href="/whey_web/products">Sản phẩm</a>
+                <a href="/whey_web/news">Tin tức</a>
+                <a href="/whey_web/contact">Liên hệ & Hỏi đáp</a>
                 <?php if ($currentUser === null): ?>
                     <a href="/whey_web/register">Register</a>
                     <a href="/whey_web/login">Login</a>
