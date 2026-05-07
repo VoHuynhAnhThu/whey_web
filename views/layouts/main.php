@@ -54,6 +54,8 @@
             <nav>
                 <a href="/whey_web/">Trang chủ</a>
                 <a href="/whey_web/about">About</a>
+                <a href="/whey_web/faq">FAQs</a> 
+
                 <a href="/whey_web/products">Sản phẩm</a>
                 <a href="/whey_web/news">Tin tức</a>
                 <a href="/whey_web/contact">Liên hệ & Hỏi đáp</a>

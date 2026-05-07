@@ -29,5 +29,14 @@
             <h4 class="header-title">Chào mừng Admin Nguyễn Chí Thanh!</h4>
             <p>Hệ thống đã sẵn sàng. Bạn có thể quản lý <b>Logo, Hotline</b> hoặc xem <b>Lời nhắn khách hàng</b> ở menu bên trái.</p>
         </div>
+        <a href="admin/settings/about" style="padding: 12px 20px; background-color: #F39C12; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+            <span>📝</span> Chỉnh sửa trang Giới thiệu
+        </a>
+
+
+        <a href="/whey_web/admin/faqs" style="padding: 12px 20px; background-color: #9B59B6; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: opacity 0.3s;">
+            <span>❓</span> Quản lý câu hỏi (FAQ)
+        </a>
+
     </div>
 </div>

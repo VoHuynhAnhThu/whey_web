@@ -1,5 +1,5 @@
 <div class="container" style="padding: 20px; max-width: 1000px; margin: 0 auto;">
-    <form action="/whey_web/admin/products/store" method="POST" class="card" style="padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <form action="/whey_web/admin/products/store" method="POST" enctype="multipart/form-data" class="card">
         <h2 style="margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 10px;">Thêm sản phẩm mới</h2>
 
         <!-- PHẦN 1: THÔNG TIN CƠ BẢN (Bảng Products)[cite: 1] -->

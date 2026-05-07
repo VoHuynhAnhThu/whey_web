@@ -3,7 +3,7 @@
         
         <footer>
             <div class="footer-area">
-                <p>© Copyright 2026. Project môn Lập trình Web - FITWHEY.</p>
+                <p>© Copyright 2026. Bài tập lớn môn Lập trình Web - FITWHEY.</p>
             </div>
         </footer>
     </div> <!-- Kết thúc page-container -->
