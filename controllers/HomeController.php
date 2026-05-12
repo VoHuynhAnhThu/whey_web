@@ -24,18 +24,20 @@ class HomeController extends Controller
     ], 'main');
 }
 
+    
     public function about(): void
-    {
-        $settingModel = new Settings();
-        $aboutData = $settingModel->getByPage('about');
+{
+    $settingModel = new Settings();
+    
+    $aboutData = $settingModel->getByPage('about');
 
-        $this->view('public/about', [
-            'title' => 'About - FITWHEY',
-            'heading' => $aboutData['about_title'] ?? 'About us',
-            'content' => $aboutData['about_content'] ?? 'Nội dung đang cập nhật...',
-            'image' => $aboutData['about_image'] ?? ''
-        ]);
-    }
+    $this->view('public/about', [
+        'title' => 'About - FITWHEY',
+        'heading' => $aboutData['about_title'] ?? 'About us',
+        'content' => $aboutData['about_content'] ?? 'Nội dung đang cập nhật...',
+        'image' => $aboutData['about_image'] ?? ''
+    ]);
+}
 
     public function faq(): void {
     $questionModel = new Question();
