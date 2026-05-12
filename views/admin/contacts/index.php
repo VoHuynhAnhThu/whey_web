@@ -21,7 +21,7 @@
                             <tr>
                                 <td>
                                     <!-- Dùng htmlspecialchars để chống chèn mã độc JS -->
-                                    <strong><?php echo htmlspecialchars($contact['full_name'], ENT_QUOTES, 'UTF-8'); ?></strong><br>
+                                    <strong><?php echo htmlspecialchars($contact['name'], ENT_QUOTES, 'UTF-8'); ?></strong><br>
                                     <small><?php echo htmlspecialchars($contact['created_at'], ENT_QUOTES, 'UTF-8'); ?></small>
                                 </td>
                                 <td>
