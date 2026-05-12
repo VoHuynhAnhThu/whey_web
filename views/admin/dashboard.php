@@ -37,6 +37,10 @@
         <a href="/whey_web/admin/faqs" style="padding: 12px 20px; background-color: #9B59B6; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: opacity 0.3s;">
             <span>❓</span> Quản lý câu hỏi (FAQ)
         </a>
+        
+        <a href="/whey_web/admin/users" style="padding: 12px 20px; background-color: #3498DB; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: opacity 0.3s;">
+    <span>👥</span> Quản lý người dùng
+</a>
 
     </div>
 </div>
