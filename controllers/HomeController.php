@@ -81,8 +81,10 @@ class HomeController extends Controller
             $result = $model->create($_POST);
 
             if ($result) {
-                // Chuyển hướng kèm thông báo thành công
+                // Chuyển hướng kèm tham số success=1 như code cũ của ông
                 $this->redirect('/whey_web/contact?success=1');
+            } else {
+                $this->redirect('/whey_web/contact?error=1');
             }
         }
     }

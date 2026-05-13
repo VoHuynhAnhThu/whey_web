@@ -58,7 +58,7 @@ $router->post('/admin/contacts/delete', 'AdminController@deleteContact');
 // Hiển thị trang liên hệ
 $router->get('/contact', 'HomeController@contact'); 
 // Xử lý gửi form
-$router->post('/contact', 'HomeController@submitContact');$router->get('/admin/news', 'AdminNewsController@newsList');
+$router->post('/contact/send', 'HomeController@submitContact');$router->get('/admin/news', 'AdminNewsController@newsList');
 $router->get('/admin/news/create', 'AdminNewsController@createForm');
 $router->post('/admin/news', 'AdminNewsController@store');
 $router->get('/admin/news/edit', 'AdminNewsController@editForm');

@@ -37,11 +37,11 @@ class ContactModel {
     }
 
     public function create(array $data): bool {
-        $sql = "INSERT INTO contacts (full_name, email, phone, subject, message) 
-                VALUES (:full_name, :email, :phone, :subject, :message)";
+        $sql = "INSERT INTO contacts (name, email, phone, subject, message) 
+                VALUES (:name, :email, :phone, :subject, :message)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
-            ':full_name' => $data['full_name'],
+            ':name' => $data['name'],
             ':email'     => $data['email'],
             ':phone'     => $data['phone'] ?? null,
             ':subject'   => $data['subject'] ?? null,
