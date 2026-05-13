@@ -1,62 +1,66 @@
-<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
-    <section class="card form-card">
-        <h2> Hồ Sơ Cá Nhân</h2>
-
-        <?php if (!empty($error)): ?>
-            <p class="alert alert-danger"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
-
-        <?php if (!empty($success)): ?>
-            <p class="alert alert-success"><?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
-
-        <div class="profile-avatar-wrap">
-            <?php if (!empty($user['avatar_url'])): ?>
-                <img class="profile-avatar" src="<?= htmlspecialchars((string) $user['avatar_url'], ENT_QUOTES, 'UTF-8') ?>"
-                    alt="Avatar">
-            <?php else: ?>
-                <div class="profile-avatar profile-avatar-placeholder">👤</div>
-            <?php endif; ?>
+<section class="profile-page py-5">
+    <div class="container">
+        <div class="mb-5">
+            <h2 class="fw-bold">HỒ SƠ <span style="color: var(--fit-primary);">CÁ NHÂN</span></h2>
+            <p class="text-muted">Quản lý thông tin tài khoản và bảo mật của ông tại FITWHEY.</p>
         </div>
 
-        <form method="post" action="/whey_web/profile" enctype="multipart/form-data" class="form-grid">
-            <div>
-                <label>Email Address</label>
-                <input type="email"
-                    value="<?= htmlspecialchars((string) ($user['email'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" disabled>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="p-4 shadow-sm text-center" style="border-radius: 20px; background: #fff; border: 1px solid #eee;">
+                    <div class="profile-avatar-container mb-3" style="width: 180px; height: 180px; margin: 0 auto; overflow: hidden; border-radius: 50%; border: 5px solid #f3f4f6;">
+                        <img src="<?= htmlspecialchars($currentUser['avatar'] ?? '/whey_web/public/images/default-avatar.png') ?>" 
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h5 class="fw-bold mb-1"><?= htmlspecialchars($currentUser['name'] ?? 'Chí Thanh') ?></h5>
+                    <p class="text-muted small mb-4"><?= htmlspecialchars($currentUser['email'] ?? '') ?></p>
+                    
+                    <label for="avatar-upload" class="btn btn-outline-success w-100 style="border-radius: 12px; cursor: pointer;">
+                        <i class="bi bi-camera me-2"></i> Đổi ảnh đại diện
+                    </label>
+                </div>
             </div>
 
-            <div>
-                <label for="full_name">Họ và Tên</label>
-                <input id="full_name" type="text" name="full_name" placeholder="Nhập tên của bạn"
-                    value="<?= htmlspecialchars((string) ($user['full_name'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-            </div>
+            <div class="col-lg-8">
+                <div class="p-4 p-md-5 shadow-sm" style="border-radius: 20px; background: #fff; border: 1px solid #eee;">
+                    <form action="/whey_web/profile/update" method="POST" enctype="multipart/form-data">
+                        <input type="file" id="avatar-upload" name="avatar" class="d-none">
 
-            <div>
-                <label for="phone">Số Điện Thoại</label>
-                <input id="phone" type="text" name="phone" placeholder="0123456789"
-                    value="<?= htmlspecialchars((string) ($user['phone'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-            </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Họ và Tên</label>
+                                <input type="text" name="name" class="fit-input" value="<?= htmlspecialchars($currentUser['name'] ?? '') ?>" placeholder="Nhập tên của ông">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Email (Không thể sửa)</label>
+                                <input type="email" class="fit-input" value="<?= htmlspecialchars($currentUser['email'] ?? '') ?>" readonly style="background: #f8f9fa !important;">
+                            </div>
+                        </div>
 
-            <div>
-                <label for="address">Địa Chỉ</label>
-                <input id="address" type="text" name="address" placeholder="Nhập địa chỉ"
-                    value="<?= htmlspecialchars((string) ($user['address'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-            </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Số điện thoại</label>
+                                <input type="text" name="phone" class="fit-input" value="<?= htmlspecialchars($currentUser['phone'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Địa chỉ</label>
+                                <input type="text" name="address" class="fit-input" value="<?= htmlspecialchars($currentUser['address'] ?? '') ?>">
+                            </div>
+                        </div>
 
-            <div>
-                <label for="bio">Giới Thiệu</label>
-                <textarea id="bio" name="bio" placeholder="Viết vài dòng về bạn..."
-                    rows="4"><?= htmlspecialchars((string) ($user['bio'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
-            </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Giới thiệu bản thân</label>
+                            <textarea name="bio" class="fit-input" rows="4"><?= htmlspecialchars($currentUser['bio'] ?? '') ?></textarea>
+                        </div>
 
-            <div>
-                <label for="avatar">Avatar (JPG, PNG, WEBP - Tối đa 2MB)</label>
-                <input id="avatar" type="file" name="avatar"
-                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                        <div class="text-end">
+                            <button type="submit" class="btn-fit-primary py-3 px-5 shadow">
+                                LƯU CẬP NHẬT <i class="bi bi-check2-circle ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <button type="submit">Lưu Thay Đổi</button>
-        </form>
-    </section>
-</div>
+        </div>
+    </div>
+</section>
