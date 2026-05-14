@@ -80,7 +80,15 @@
 </head>
 
 <body>
-    <?php $currentUser = Auth::user(); ?>
+    <?php 
+        $currentUser = Auth::user(); 
+        $displayUser = null;
+        if ($currentUser !== null) {
+            $userModel = new User();
+            $displayUser = $userModel->findById($currentUser['id']);
+        }
+
+    ?>
     
     <header class="site-header">
         <div class="container">
@@ -103,7 +111,7 @@
                         <?php if (Auth::isAdmin()): ?>
                             <a href="/whey_web/admin" class="btn btn-sm btn-light rounded-pill px-3">Quản trị</a>
                         <?php endif; ?>
-                        <a href="/whey_web/profile" class="text-white fw-bold">Hi, <?= htmlspecialchars($currentUser['email']) ?></a>
+                        <a href="/whey_web/profile" class="text-white fw-bold">Hi, <?= htmlspecialchars($displayUser['full_name'] ??  'User') ?></a>
                         <a href="/whey_web/logout" title="Đăng xuất"><i class="bi bi-box-arrow-right fs-4 text-white"></i></a>
                     <?php endif; ?>
                     <a href="/whey_web/cart" class="ms-2"><i class="bi bi-cart3 fs-4 text-white"></i></a>
