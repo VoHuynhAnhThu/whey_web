@@ -12,7 +12,7 @@
     <style>
         :root {
             --fit-primary: #10B981; 
-            --fit-dark: #333333;
+            --fit-dark: #222222; /* Màu nền footer tối hơn theo ảnh */
             --fit-bg-light: #F3F4F6;
             --text-main: #000000;
         }
@@ -24,90 +24,58 @@
             flex-direction: column; 
             min-height: 100vh; 
             margin: 0; 
+            overflow-x: hidden;
         }
 
-        .site-header {
-            background-color: var(--fit-primary);
-            padding-top: 4px;
-            padding-bottom: 15px;
-        }
-
-        .header-main-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-        }
-
-        .logo-box {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: var(--text-main);
-        }
+        /* --- HEADER --- */
+        .site-header { background-color: var(--fit-primary); padding: 10px 0; }
+        .header-main-row { display: flex; align-items: center; justify-content: space-between; }
+        .logo-box { display: flex; align-items: center; text-decoration: none; color: var(--text-main); }
         .logo-img { height: 45px; margin-right: 10px; }
-        
-        .search-box-wrapper {
-            flex: 1;
-            max-width: 400px;
-            margin: 0 20px;
-            position: relative;
-        }
-        .search-box-wrapper input {
-            width: 100%;
-            padding: 8px 15px 8px 45px;
-            border-radius: 25px;
-            border: none;
-            outline: none;
-        }
-        .search-box-wrapper .bi-search {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+        .search-box-wrapper { flex: 1; max-width: 400px; margin: 0 20px; position: relative; }
+        .search-box-wrapper input { width: 100%; padding: 8px 15px 8px 45px; border-radius: 25px; border: none; outline: none; }
+        .search-box-wrapper .bi-search { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); }
+        .header-user-actions { display: flex; gap: 15px; align-items: center; }
+        .header-user-actions a { color: var(--text-main); text-decoration: none; font-weight: 500; }
+        .header-nav { display: flex; justify-content: center; gap: 35px; margin-top: 15px; }
+        .header-nav a { color: var(--text-main); text-decoration: none; font-weight: 500; }
 
-        .header-user-actions { display: flex; gap: 15px; }
-        .header-user-actions a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .header-nav {
-            display: flex;
-            justify-content: center;
-            gap: 35px;
-            margin-top: 10px;
-        }
-        .header-nav a {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        /* Style cho nút Admin */
-        .btn-admin-link {
-            background: rgba(255, 255, 255, 0.25);
-            padding: 5px 15px;
-            border-radius: 20px;
-            color: white !important;
-            transition: 0.3s;
-        }
-        .btn-admin-link:hover {
-            background: rgba(255, 255, 200, 0.4);
-        }
-
+        /* --- FOOTER CHUẨN ẢNH --- */
         .site-footer {
             background-color: var(--fit-dark);
             color: #ffffff;
-            padding: 50px 0 20px;
+            padding: 60px 0 40px;
             margin-top: auto;
         }
-        .footer-sub { font-size: 14px; color: #ccc; }
+        .footer-top { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; margin-bottom: 40px; }
+        .footer-info-text { font-size: 0.95rem; color: #ccc; line-height: 1.6; }
+        .footer-heading { font-weight: 800; font-size: 1.1rem; margin-bottom: 20px; color: #fff; }
+        .footer-link { color: #ccc; text-decoration: none; transition: 0.3s; font-size: 0.95rem; display: block; margin-bottom: 10px; }
+        .footer-link:hover { color: var(--fit-primary); }
+
+        /* Ô nhận tin khuyến mãi */
+        .subscribe-container { max-width: 400px; }
+        .subscribe-input {
+            background: #F3F4F6;
+            border: none;
+            border-radius: 15px;
+            padding: 20px 25px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #333;
+        }
+        .btn-subscribe {
+            background: #fff;
+            color: var(--fit-primary);
+            border: 2px solid var(--fit-primary);
+            border-radius: 25px;
+            padding: 8px 30px;
+            font-weight: 600;
+            float: right;
+            transition: 0.3s;
+        }
+        .btn-subscribe:hover { background: var(--fit-primary); color: #fff; }
     </style>
 </head>
 
@@ -118,44 +86,29 @@
         <div class="container">
             <div class="header-main-row">
                 <a href="/whey_web/" class="logo-box">
-                    <img src="<?= !empty($settings['site_logo']) ? '/whey_web/public/uploads/'.$settings['site_logo'] : '/whey_web/assets/images/logo.png' ?>" alt="Logo" class="logo-img">
+                    <img src="/whey_web/assets/images/logo.png" alt="Logo" class="logo-img">
                     <div class="logo-text">
                         <h1 class="h4 fw-bold m-0">FITWHEY</h1>
                         <span class="small italic">Sport nutrition</span>
                     </div>
                 </a>
-
                 <div class="search-box-wrapper">
                     <i class="bi bi-search"></i>
                     <input type="text" placeholder="Tìm kiếm sản phẩm...">
                 </div>
-
-                <div class="header-user-actions d-flex align-items-center">
+                <div class="header-user-actions">
                     <?php if ($currentUser === null): ?>
                         <a href="/whey_web/login"><i class="bi bi-person fs-4"></i> Đăng nhập</a>
                     <?php else: ?>
                         <?php if (Auth::isAdmin()): ?>
-                            <a href="/whey_web/admin" class="btn-admin-link me-2">
-                                <i class="bi bi-shield-lock"></i> Quản trị
-                            </a>
+                            <a href="/whey_web/admin" class="btn btn-sm btn-light rounded-pill px-3">Quản trị</a>
                         <?php endif; ?>
-
-                        <a href="/whey_web/profile" class="me-2">
-                            <i class="bi bi-person-circle fs-4 text-white"></i> 
-                            <span class="text-white fw-bold">
-                                <?= htmlspecialchars($currentUser['email'] ?? 'User') ?>
-                            </span>
-                        </a>
-                        
-                        <a href="/whey_web/logout" class="text-white ms-2" title="Đăng xuất">
-                            <i class="bi bi-box-arrow-right fs-4"></i>
-                        </a>
+                        <a href="/whey_web/profile" class="text-white fw-bold">Hi, <?= htmlspecialchars($currentUser['email']) ?></a>
+                        <a href="/whey_web/logout" title="Đăng xuất"><i class="bi bi-box-arrow-right fs-4 text-white"></i></a>
                     <?php endif; ?>
-                    
-                    <a href="/whey_web/cart" class="ms-3"><i class="bi bi-cart3 fs-4"></i></a>
+                    <a href="/whey_web/cart" class="ms-2"><i class="bi bi-cart3 fs-4 text-white"></i></a>
                 </div>
             </div>
-
             <nav class="header-nav">
                 <a href="/whey_web/">Trang chủ</a>
                 <a href="/whey_web/about">Giới thiệu</a>
@@ -168,33 +121,49 @@
 
     <main class="py-5">
         <div class="container">
-            <?php if ($msg = Session::flash('success')): ?>
-                <div class="alert alert-success"><?= $msg ?></div>
-            <?php endif; ?>
-            <?php if ($msg = Session::flash('error')): ?>
-                <div class="alert alert-danger"><?= $msg ?></div>
-            <?php endif; ?>
-
             <?= $content ?>
         </div>
     </main>
 
     <footer class="site-footer">
         <div class="container">
+            <div class="footer-top">
+                <div class="d-flex align-items-start gap-3">
+                    <img src="/whey_web/assets/images/logo.png" alt="FITWHEY" style="height: 50px;">
+                    <div>
+                        <h4 class="fw-bold m-0 text-white">FITWHEY</h4>
+                        <div class="footer-info-text mt-2">
+                            📍 Địa chỉ cửa hàng: <?= htmlspecialchars($settings['site_address'] ?? '1000 Phạm Văn Thuận, Biên Hòa, Đồng Nai') ?> <br>
+                            📞 Hotline & Email: <?= htmlspecialchars($settings['site_hotline'] ?? '0909 123 456') ?> | support@fitwhey.vn
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row g-4">
                 <div class="col-lg-4">
-                    <h5 class="fw-bold mb-3">FITWHEY</h5>
-                    <p class="footer-sub">📍 <?= htmlspecialchars($settings['site_address'] ?? 'Biên Hòa, Đồng Nai') ?></p>
-                    <p class="footer-sub">📞 Hotline: <?= htmlspecialchars($settings['site_hotline'] ?? '0909 123 456') ?></p>
+                    <h6 class="footer-heading">Danh mục sản phẩm</h6>
+                    <a href="#" class="footer-link">Whey Protein</a>
+                    <a href="#" class="footer-link">Sữa tăng cân (Mass)</a>
+                    <a href="#" class="footer-link">Yến mạch & Ngũ cốc</a>
+                    <a href="#" class="footer-link">Phụ kiện Gym</a>
                 </div>
-                <div class="col-lg-4 text-center">
-                    <h6 class="fw-bold mb-3">HỖ TRỢ</h6>
-                    <p class="small mb-1"><a href="/whey_web/about" class="text-white text-decoration-none">Về chúng tôi</a></p>
-                    <p class="small mb-1">Chính sách bảo mật</p>
+
+                <div class="col-lg-4">
+                    <h6 class="footer-heading">Hỗ trợ khách hàng</h6>
+                    <a href="#" class="footer-link">Chính sách đổi trả</a>
+                    <a href="#" class="footer-link">Phương thức thanh toán</a>
+                    <a href="#" class="footer-link">Câu hỏi thường gặp (FAQ)</a>
+                    <a href="/whey_web/contact" class="footer-link">Liên hệ</a>
+                    <a href="/whey_web/about" class="footer-link">Về chúng tôi</a>
                 </div>
-                <div class="col-lg-4 text-end">
-                    <h6 class="fw-bold mb-3">BÀI TẬP LỚN</h6>
-                    <p class="small opacity-50">&copy; 2026 Project Web Programming</p>
+
+                <div class="col-lg-4">
+                    <h6 class="footer-heading">Nhận tin khuyến mãi</h6>
+                    <div class="subscribe-container">
+                        <input type="email" class="subscribe-input" placeholder="Nhập email của bạn">
+                        <button class="btn-subscribe">Đăng ký</button>
+                    </div>
                 </div>
             </div>
         </div>
