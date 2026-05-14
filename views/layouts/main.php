@@ -88,7 +88,15 @@
 </head>
 
 <body>
-    <?php $currentUser = Auth::user(); ?>
+    <?php 
+        $currentUser = Auth::user(); 
+        $displayUser = null;
+        if ($currentUser !== null) {
+            $userModel = new User();
+            $displayUser = $userModel->findById($currentUser['id']);
+        }
+
+    ?>
     
     <header class="site-header">
         <div class="container">
@@ -113,15 +121,10 @@
                         <a href="/whey_web/login"><i class="bi bi-person fs-4"></i></a>
                     <?php else: ?>
                         <?php if (Auth::isAdmin()): ?>
-    <a href="/whey_web/admin" class="btn btn-sm btn-admin-custom rounded-pill px-3 d-none d-md-block me-2">
-        <i class="bi bi-shield-lock-fill"></i> Quản trị
-    </a>
-<?php endif; ?>
-                        <a href="/whey_web/profile" class="d-flex align-items-center">
-                            <i class="bi bi-person-circle fs-4"></i>
-                            <span class="user-name-text ms-1 fw-bold">Hi, <?= explode('@', $currentUser['email'])[0] ?></span>
-                        </a>
-                        <a href="/whey_web/logout" title="Đăng xuất"><i class="bi bi-box-arrow-right fs-4"></i></a>
+                            <a href="/whey_web/admin" class="btn btn-sm btn-light rounded-pill px-3">Quản trị</a>
+                        <?php endif; ?>
+                        <a href="/whey_web/profile" class="text-white fw-bold">Hi, <?= htmlspecialchars($displayUser['full_name'] ??  'User') ?></a>
+                        <a href="/whey_web/logout" title="Đăng xuất"><i class="bi bi-box-arrow-right fs-4 text-white"></i></a>
                     <?php endif; ?>
                     
                     <a href="/whey_web/cart" class="ms-1"><i class="bi bi-cart3 fs-4"></i></a>
