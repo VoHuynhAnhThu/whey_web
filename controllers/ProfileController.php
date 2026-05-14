@@ -17,8 +17,7 @@ class ProfileController extends Controller
             $this->redirect('/whey_web/login');
         }
 
-        // Đảm bảo tên file view này khớp với file .php trong thư mục views/profile
-        $this->view('profile/index', [
+        $this->view('profile/edit', [
             'title' => 'Hồ sơ cá nhân - FITWHEY',
             'user' => $user,
             'error' => Session::flash('error'),
@@ -95,6 +94,6 @@ class ProfileController extends Controller
             return ['path' => 'avatars/' . $fileName, 'error' => null];
         }
 
-        return ['path' => null, 'error' => 'Không thể lưu avatar lên server.'];
+        return ['path' => '/uploads/avatars/' . $fileName, 'error' => null];
     }
 }

@@ -9,7 +9,7 @@
             <a href="/whey_web/admin/comments?status=all" class="filter-btn <?= $status === 'all' ? 'active' : '' ?>">
                 Tất cả (<?= isset($total) ? $total : 0 ?>)
             </a>
-            <a href="/whey_web/admin/comments?status=pending"
+            <!-- <a href="/whey_web/admin/comments?status=pending"
                 class="filter-btn <?= $status === 'pending' ? 'active' : '' ?>">
                 Chờ duyệt
             </a>
@@ -20,7 +20,7 @@
             <a href="/whey_web/admin/comments?status=rejected"
                 class="filter-btn <?= $status === 'rejected' ? 'active' : '' ?>">
                 Bị từ chối
-            </a>
+            </a> -->
         </div>
 
         <form method="GET" action="/whey_web/admin/comments" class="search-form">
@@ -89,9 +89,7 @@
                                 <span class="badge badge-<?= $comment['status'] ?>">
                                     <?php
                                     $statusLabels = [
-                                        'pending' => 'Chờ duyệt',
-                                        'approved' => 'Đã duyệt',
-                                        'rejected' => 'Bị từ chối'
+                                        'approved' => 'Đã đăng',
                                     ];
                                     ?>
                                     <?= $statusLabels[$comment['status']] ?? ucfirst($comment['status']) ?>
@@ -110,7 +108,6 @@
                                     <form method="POST" action="/whey_web/admin/comments/reject" class="inline-form">
                                         <input type="hidden" name="id"
                                             value="<?= htmlspecialchars($comment['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                        <button type="submit" class="btn btn-sm btn-warning" title="Từ chối">✗</button>
                                     </form>
                                 <?php endif; ?>
 

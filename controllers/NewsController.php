@@ -96,19 +96,19 @@ class NewsController extends Controller
 
         if (!$newsId || $content === '') {
             Session::flash('error', 'Vui lòng điền đầy đủ thông tin.');
-            $this->redirect('/whey_web/news?slug=' . ($_POST['slug'] ?? ''));
+            // $this->redirect('/whey_web/news?slug=' . ($_POST['slug'] ?? ''));
             return;
         }
 
         if ($rating < 0 || $rating > 5) {
             Session::flash('error', 'Đánh giá không hợp lệ.');
-            $this->redirect('/whey_web/news?slug=' . ($_POST['slug'] ?? ''));
+            // $this->redirect('/whey_web/news?slug=' . ($_POST['slug'] ?? ''));
             return;
         }
 
         if (mb_strlen($content) > 2000) {
             Session::flash('error', 'Bình luận không được vượt quá 2000 ký tự.');
-            $this->redirect('/whey_web/news?slug=' . ($_POST['slug'] ?? ''));
+            // $this->redirect('/whey_web/news?slug=' . ($_POST['slug'] ?? ''));
             return;
         }
 
@@ -126,7 +126,7 @@ class NewsController extends Controller
             'content' => $content,
         ]);
 
-        Session::flash('success', 'Bình luận của bạn đã được gửi, chờ phê duyệt từ quản trị viên.');
-        $this->redirect('/whey_web/news?slug=' . $news['slug']);
+        Session::flash('success', 'Bình luận của bạn đã được gửi.');
+        $this->redirect('/whey_web/news/detail?slug=' . $news['slug']);
     }
 }

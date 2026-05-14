@@ -25,8 +25,10 @@
             <div class="col-lg-4 text-center">
                 <div class="profile-card">
                     <div class="avatar-wrapper">
-                        <img src="<?= !empty($user['avatar_url']) ? '/whey_web/public/uploads/'.$user['avatar_url'] : '/whey_web/assets/images/default-avatar.png' ?>" 
-                             alt="Avatar" class="avatar-img">
+                        <img src="<?= !empty($user['avatar_url'])
+                            ? '/whey_web/public' . $user['avatar_url']
+                            : '/whey_web/assets/images/default-avatar.png' ?>"
+                            alt="Avatar" class="avatar-img">
                     </div>
                     <h4 class="fw-bold mb-3"><?= htmlspecialchars($user['full_name'] ?? 'Chí Thanh') ?></h4>
                     <input type="file" name="avatar" class="d-none" id="avatarInput">

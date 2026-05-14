@@ -191,13 +191,15 @@
 
     .featured-image {
         margin: -20px -20px 30px -20px;
-        max-height: 500px;
+        height: 400px;           /* hoặc 500px theo thiết kế */
         overflow: hidden;
     }
 
     .featured-image img {
         width: 100%;
-        height: auto;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
         display: block;
     }
 
