@@ -13,12 +13,13 @@ class ProfileController extends Controller
 
         if ($user === null) {
             Auth::logout();
-            Session::flash('error', 'Phien dang nhap khong hop le.');
+            Session::flash('error', 'Phiên đăng nhập không hợp lệ.');
             $this->redirect('/whey_web/login');
         }
 
-        $this->view('profile/edit', [
-            'title' => 'Ho so ca nhan - FITWHEY',
+        // Đảm bảo tên file view này khớp với file .php trong thư mục views/profile
+        $this->view('profile/index', [
+            'title' => 'Hồ sơ cá nhân - FITWHEY',
             'user' => $user,
             'error' => Session::flash('error'),
             'success' => Session::flash('success'),
@@ -34,7 +35,7 @@ class ProfileController extends Controller
         $user = $userModel->findById($userId);
 
         if ($user === null) {
-            Session::flash('error', 'Khong tim thay nguoi dung.');
+            Session::flash('error', 'Không tìm thấy người dùng.');
             $this->redirect('/whey_web/login');
         }
 
@@ -45,13 +46,12 @@ class ProfileController extends Controller
 
         $avatarUrl = (string) ($user['avatar_url'] ?? '');
 
-        if (isset($_FILES['avatar']) && (int) ($_FILES['avatar']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
             $upload = $this->handleAvatarUpload($_FILES['avatar']);
             if ($upload['error'] !== null) {
                 Session::flash('error', $upload['error']);
                 $this->redirect('/whey_web/profile');
             }
-
             $avatarUrl = (string) $upload['path'];
         }
 
@@ -63,51 +63,38 @@ class ProfileController extends Controller
             'bio' => $bio,
         ]);
 
-        Session::flash('success', 'Cap nhat ho so thanh cong.');
+        Session::flash('success', 'Cập nhật hồ sơ thành công.');
         $this->redirect('/whey_web/profile');
     }
 
     private function handleAvatarUpload(array $file): array
     {
-        if ((int) $file['error'] !== UPLOAD_ERR_OK) {
-            return ['path' => null, 'error' => 'Tai len avatar that bai.'];
-        }
-
         $tmpName = (string) $file['tmp_name'];
-        $size = (int) $file['size'];
-
-        if ($size > 2 * 1024 * 1024) {
-            return ['path' => null, 'error' => 'Avatar toi da 2MB.'];
+        if ((int) $file['size'] > 2 * 1024 * 1024) {
+            return ['path' => null, 'error' => 'Avatar tối đa 2MB.'];
         }
 
+        $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mime = $finfo->file($tmpName);
 
-        $allowed = [
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/webp' => 'webp',
-        ];
-
         if (!isset($allowed[$mime])) {
-            return ['path' => null, 'error' => 'Avatar chi ho tro JPG, PNG, WEBP.'];
+            return ['path' => null, 'error' => 'Avatar chỉ hỗ trợ JPG, PNG, WEBP.'];
         }
 
-        $avatarsDir = __DIR__ . '/../uploads/avatars';
-        if (!is_dir($avatarsDir)) {
-            mkdir($avatarsDir, 0755, true);
+        // SỬA ĐƯỜNG DẪN: Lưu vào thư mục public để trình duyệt có thể truy cập
+        $uploadDir = './public/uploads/avatars/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
         }
 
-        $fileName = Str::uuid() . '.' . $allowed[$mime];
-        $target = $avatarsDir . '/' . $fileName;
+        $fileName = 'avatar_' . time() . '_' . uniqid() . '.' . $allowed[$mime];
+        $target = $uploadDir . $fileName;
 
-        if (!move_uploaded_file($tmpName, $target)) {
-            return ['path' => null, 'error' => 'Khong the luu avatar len server.'];
+        if (move_uploaded_file($tmpName, $target)) {
+            return ['path' => 'avatars/' . $fileName, 'error' => null];
         }
 
-        return [
-            'path' => '/whey_web/uploads/avatars/' . $fileName,
-            'error' => null,
-        ];
+        return ['path' => null, 'error' => 'Không thể lưu avatar lên server.'];
     }
 }

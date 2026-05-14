@@ -31,16 +31,20 @@
         <div class="main-menu">
             <div class="menu-inner">
                 <nav>
-                    <ul class="metismenu" id="menu">
-                        <li><a href="/whey_web/admin"><i class="ti-home"></i><span>Dashboard</span></a></li>
-                        <li><a href="/whey_web/admin/products"><i class="ti-bag"></i><span>Sản phẩm</span></a></li>
-                        <li><a href="/whey_web/admin/news"><i class="ti-write"></i><span>Tin tức</span></a></li>
-                        <li><a href="/whey_web/admin/comments"><i class="ti-comments"></i><span>Bình luận</span></a></li>
-                        <li><a href="/whey_web/admin/users"><i class="ti-user"></i><span>Người dùng</span></a></li>
-                        <li><a href="/whey_web/admin/orders"><i class="ti-receipt"></i><span>Đơn hàng</span></a></li>
-                        <li><a href="/whey_web/admin/settings"><i class="ti-settings"></i><span>Cài đặt</span></a></li>
-                    </ul>
-                </nav>
+    <ul class="metismenu" id="menu">
+        <li><a href="/whey_web/admin"><i class="ti-home"></i><span>Dashboard</span></a></li>
+        <li><a href="/whey_web/admin/products"><i class="ti-bag"></i><span>Sản phẩm</span></a></li>
+        <li><a href="/whey_web/admin/news"><i class="ti-write"></i><span>Tin tức</span></a></li>
+        <li><a href="/whey_web/admin/comments"><i class="ti-comments"></i><span>Bình luận</span></a></li>
+        <li><a href="/whey_web/admin/users"><i class="ti-user"></i><span>Người dùng</span></a></li>
+        <li><a href="/whey_web/admin/orders"><i class="ti-receipt"></i><span>Đơn hàng</span></a></li>
+        
+        <li><a href="/whey_web/admin/contacts"><i class="ti-email"></i><span>Liên hệ</span></a></li>
+        
+        <li><a href="/whey_web/admin/settings"><i class="ti-settings"></i><span>Cài đặt chung</span></a></li>
+        <li><a href="/whey_web/admin/settings/about"><i class="ti-info-alt"></i><span>Quản lý Giới thiệu</span></a></li>
+    </ul>
+</nav>
             </div>
         </div>
     </div>

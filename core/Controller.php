@@ -18,7 +18,7 @@ abstract class Controller
     protected function requireAuth(): void
     {
         if (!Auth::check()) {
-            Session::flash('error', 'Vui long dang nhap de tiep tuc.');
+            Session::flash('error', 'Vui lòng đăng nhập để tiếp tục.');
             $this->redirect('/whey_web/login');
         }
     }
@@ -26,7 +26,12 @@ abstract class Controller
     protected function requireGuest(): void
     {
         if (Auth::check()) {
-            $this->redirect('/whey_web/profile');
+            // Nếu là admin thì về dashboard, nếu là user thì về profile
+            if (Auth::isAdmin()) {
+                $this->redirect('/whey_web/admin');
+            } else {
+                $this->redirect('/whey_web/profile');
+            }
         }
     }
 
