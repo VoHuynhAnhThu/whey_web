@@ -114,7 +114,8 @@
                 <a href="/whey_web/about">Giới thiệu</a>
                 <a href="/whey_web/products">Sản phẩm</a>
                 <a href="/whey_web/news">Tin tức</a>
-                <a href="/whey_web/contact">Liên hệ & Hỏi đáp</a>
+                <a href="/whey_web/contact">Liên hệ</a>
+                <a href="/whey_web/faq">Hỏi đáp</a>
             </nav>
         </div>
     </header>

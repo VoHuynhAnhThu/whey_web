@@ -1,58 +1,76 @@
-<style>
-    .admin-card { border-radius: 20px; background: #fff; border: 1px solid #eee; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-    .fit-input { background: #F3F4F6 !important; border: 2px solid transparent !important; border-radius: 12px !important; padding: 12px 20px; width: 100%; outline: none; transition: 0.3s; margin-top: 8px; }
-    .fit-input:focus { border-color: #10B981 !important; background: #fff !important; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.1); }
-    .btn-fit-primary { background-color: #10B981; color: white; border: none; border-radius: 12px; font-weight: 700; transition: 0.3s; cursor: pointer; padding: 15px 40px; }
-    .btn-fit-primary:hover { background-color: #0d9468; transform: translateY(-2px); }
-    .form-label { font-weight: 700; color: #374151; margin-bottom: 0; display: block; }
-    .status-alert { border-radius: 12px; padding: 15px; margin-bottom: 20px; font-weight: 600; }
-</style>
-
-<div class="container-fluid py-4">
-    <div class="mb-4 d-flex align-items-center justify-content-between">
-        <h2 class="fw-bold m-0">QUẢN LÝ TRANG <span style="color: #10B981;">GIỚI THIỆU</span></h2>
-        <a href="/whey_web/about" target="_blank" class="btn btn-outline-secondary" style="border-radius: 10px;">
-            <i class="ti-eye"></i> Xem trang chủ
-        </a>
-    </div>
-
-    <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
-        <div class="alert alert-success status-alert shadow-sm">
-            <i class="ti-check-box"></i> Đã cập nhật nội dung trang giới thiệu thành công!
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Giới thiệu - FITWHEY</title>
+    <link rel="stylesheet" href="/whey_web/assets/css/about.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="header-actions">
+            <div class="title-group">
+                <h1>Quản lý trang Giới thiệu</h1>
+                <p class="subtitle">Chỉnh sửa nội dung hiển thị trên trang giới thiệu của FITWHEY</p>
+            </div>
+            <a href="/whey_web/about" target="_blank" class="btn-view-site">
+                <i class="ti-eye"></i> Xem trang chủ
+            </a>
         </div>
-    <?php endif; ?>
 
-    <div class="admin-card">
-        <form action="/whey_web/admin/settings/about" method="POST">
-            <h5 class="fw-bold mb-4" style="border-left: 5px solid #10B981; padding-left: 15px;">Chỉnh sửa nội dung chi tiết</h5>
+        <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
+            <div class="alert-success">
+                <i class="ti-check"></i> Cập nhật nội dung thành công!
+            </div>
+        <?php endif; ?>
+
+        <form action="/whey_web/admin/settings/about" method="POST" enctype="multipart/form-data" class="admin-form">
             
-            <div class="mb-4">
-                <label class="form-label">Tiêu đề trang giới thiệu</label>
-                <input type="text" name="settings[about_title]" class="fit-input" 
-                       value="<?= htmlspecialchars($about['about_title'] ?? '') ?>" placeholder="Ví dụ: Chào mừng đến với FITWHEY">
-            </div>
-
-            <div class="mb-4">
-                <label class="form-label">Nội dung giới thiệu chi tiết</label>
-                <textarea name="settings[about_content]" class="fit-input" rows="10" placeholder="Viết câu chuyện về thương hiệu của bạn tại đây..."><?= htmlspecialchars($about['about_content'] ?? '') ?></textarea>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <label class="form-label">Đường dẫn ảnh minh họa (URL hoặc tên file)</label>
-                    <input type="text" name="settings[about_image]" class="fit-input" 
-                           value="<?= htmlspecialchars($about['about_image'] ?? '') ?>" placeholder="about_bg.jpg">
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Tiêu đề trang</label>
+                    <input type="text" name="settings[about_title]" class="form-control" 
+                           value="<?= htmlspecialchars($about['about_title'] ?? '') ?>" placeholder="Ví dụ: Welcome to FitWhey">
                 </div>
-                <div class="col-md-6 mb-4">
-                    <label class="form-label">Câu slogan / Trích dẫn</label>
-                    <input type="text" name="settings[about_slogan]" class="fit-input" 
-                           value="<?= htmlspecialchars($about['about_slogan'] ?? '') ?>" placeholder="Sức khỏe của bạn là niềm tự hào của chúng tôi">
+
+                <div class="form-group">
+                    <label>Nội dung chi tiết</label>
+                    <textarea name="settings[about_content]" class="form-control" rows="8" placeholder="Viết câu chuyện về thương hiệu..."><?= htmlspecialchars($about['about_content'] ?? '') ?></textarea>
                 </div>
             </div>
 
-            <div class="text-end mt-4">
-                <button type="submit" class="btn-fit-primary shadow">LƯU THAY ĐỔI</button>
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Ảnh minh họa (Nên dùng ảnh .jpg, .png)</label>
+                    <div class="upload-wrapper">
+                        <input type="file" name="about_image_file" class="form-control" accept="image/*">
+                    </div>
+                    
+                    <?php if (!empty($about['about_image'])): ?>
+                        <div class="image-preview-container">
+                            <span class="preview-label">Ảnh đang hiển thị:</span>
+                            <div class="image-box">
+                                <?php 
+                                    // Kiểm tra nếu là link web thì hiện thẳng, nếu là tên file thì nối đường dẫn nội bộ
+                                    $image_path = $about['about_image'];
+                                    if (!filter_var($image_path, FILTER_VALIDATE_URL)) {
+                                        $image_path = "/whey_web/public/uploads/" . $image_path;
+                                    }
+                                ?>
+                                <img src="<?= $image_path ?>" alt="About Image" onerror="this.src='/whey_web/assets/images/default-placeholder.png';">
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-save">
+                    <i class="ti-save"></i> LƯU THAY ĐỔI
+                </button>
             </div>
         </form>
     </div>
-</div>
+</body>
+</html>

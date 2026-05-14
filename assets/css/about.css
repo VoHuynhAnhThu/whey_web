@@ -1,163 +1,207 @@
+/* --- RESET & BIẾN --- */
+:root {
+    --primary: #2ecc71;
+    --primary-dark: #27ae60;
+    --bg-light: #f8f9fa;
+    --text-main: #2d3436;
+    --text-muted: #636e72;
+    --border: #dfe6e9;
+    --shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
 .admin-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #ffffff;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 30px;
+    background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: var(--shadow);
+    font-family: 'Segoe UI', sans-serif;
 }
 
-.admin-container h1 {
-    color: #2c3e50;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid #f1f1f1;
-    padding-bottom: 0.5rem;
+/* --- HEADER --- */
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
 }
 
+.header-actions h1 {
+    font-size: 24px;
+    color: var(--text-main);
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 0;
+}
+
+.btn-view-site {
+    text-decoration: none;
+    color: #3498db;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.btn-view-site:hover {
+    background: #ebf5fb;
+}
+
+/* --- FORM --- */
+.form-section {
+    margin-bottom: 25px;
+}
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
     font-weight: 600;
-    color: #34495e;
-    margin-bottom: 0.5rem;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    font-size: 14px;
 }
-
 
 .form-control {
     width: 100%;
     padding: 12px 15px;
-    border: 1px solid #dcdde1;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box; 
+    font-size: 15px;
+    color: var(--text-main);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
 }
 
-
 textarea.form-control {
-    resize: vertical;
-    min-height: 200px;
     line-height: 1.6;
+    resize: vertical;
+}
+
+/* --- UPLOAD & PREVIEW --- */
+.upload-wrapper {
+    background: var(--bg-light);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px dashed #b2bec3;
+}
+
+.image-preview-container {
+    margin-top: 15px;
+    padding: 15px;
+    background: #fdfdfd;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.preview-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.image-box {
+    /* Đã bỏ max-width ở đây để nó không xung đột với width của img bên dưới */
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: inline-block; /* Giúp hộp chứa ôm sát ảnh */
+}
+
+/* KHỐI XỬ LÝ ẢNH TRÁNH TRÀN VÀ MÉO (Đã được gộp) */
+.image-box img {
+    width: 250px; /* Cố định chiều rộng */
+    height: 180px; /* Cố định chiều cao */
+    display: block; /* Giữ ảnh luôn ở dạng block */
+    border-radius: 6px; /* Bo góc ảnh cho đẹp */
+    border: 1px solid #ddd; /* Thêm viền nhẹ */
+    object-fit: cover; /* Thuộc tính quan trọng nhất để không bị méo ảnh */
+    max-width: 100%; /* Đảm bảo ảnh không tràn ra ngoài nếu màn hình thu nhỏ */
+}
+
+/* --- BUTTON SAVE --- */
+.form-actions {
+    margin-top: 30px;
+    text-align: left;
 }
 
 .btn-save {
-    background-color: #27ae60;
-    color: white;
-    padding: 12px 30px;
+    background: var(--primary-dark); /* Trả về màu xanh cho đồng bộ với dự án, bạn có thể đổi lại nếu thích màu xám/đen */
+    color: #fff;
     border: none;
+    padding: 15px 35px;
     border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
 }
 
 .btn-save:hover {
-    background-color: #219150;
+    background: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.btn-save:active {
-    transform: scale(0.98);
-}
-
-
+/* --- ALERT --- */
 .alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 1rem;
+    background: #dff9fb;
+    color: #0984e3;
+    padding: 15px;
     border-radius: 8px;
-    margin-bottom: 1.5rem;
-    border: 1px solid #c3e6cb;
-}
-
-
-.card {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 40px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    line-height: 1.8;
-    color: #333;
-}
-
-
-.card h2 {
-    font-size: 2.5rem;
-    color: #1a1a1a;
     margin-bottom: 25px;
-    text-align: center;
-    position: relative;
-    font-weight: 700;
+    border-left: 5px solid #0984e3;
+    font-weight: 600;
 }
 
+/* --- PHẦN XỬ LÝ ẢNH TRONG ADMIN --- */
 
-.card h2::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background: #27ae60; 
-    margin: 10px auto 0;
-    border-radius: 2px;
+/* Khung chứa ảnh: cố định kích thước khung */
+.admin-container .image-box {
+    width: 280px !important;    /* Độ rộng cố định */
+    height: 180px !important;   /* Chiều cao cố định */
+    overflow: hidden !important; /* Cắt bỏ bất kỳ phần nào tràn ra ngoài khung */
+    border-radius: 8px;
+    border: 2px solid #eee;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    display: block !important;
 }
 
-
-.about-content p {
-    font-size: 1.1rem;
-    color: #555;
-    text-align: justify;
-    margin-bottom: 20px;
-    white-space: pre-line; 
+/* Ảnh bên trong: lấp đầy khung mà không bị méo */
+.admin-container .image-box img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* Quan trọng: giúp ảnh không bị bẹp/méo */
+    display: block !important;
 }
 
-
-.about-image {
-    width: 100%;
-    overflow: hidden;
-    border-radius: 12px;
-    margin-top: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.about-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: transform 0.5s ease;
-}
-
-
-.about-image:hover img {
-    transform: scale(1.03);
-}
-
-
-@media (max-width: 768px) {
-    .card {
-        margin: 20px;
-        padding: 20px;
-    }
-    
-    .card h2 {
-        font-size: 1.8rem;
-    }
-    
-    .about-content p {
-        font-size: 1rem;
-    }
+/* Đảm bảo khung Preview không bị đẩy bởi các thành phần khác */
+.image-preview-container {
+    max-width: 300px !important;
 }
