@@ -1,5 +1,5 @@
 /* (1366x768) WXGA Display */
-
+@import "../css/styles.css";
 @media screen and (min-width: 1441px) and (max-width: 1920px) {
     .error-content {
         margin-top: 100px;

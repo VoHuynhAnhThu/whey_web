@@ -1,6 +1,26 @@
 <?php
 
 declare(strict_types=1);
+class AdminUserController extends Controller
+{
+    private User $userModel;
+
+    public function __construct()
+    {
+        $this->requireRole('admin');
+        $this->userModel = new User();
+    }
+
+    public function index(): void
+    {
+        $users = $this->userModel->getAll();
+
+        $this->view('admin/users/index', [
+            'title' => 'Quản lý người dùng - FITWHEY',
+            'users' => $users,
+        ], 'admin');
+    }
+}
 
 $router->get('/', 'HomeController@index');
 $router->get('/about', 'HomeController@about');
@@ -70,12 +90,12 @@ $router->post('/admin/comments/approve', 'AdminNewsController@approveComment');
 $router->post('/admin/comments/reject', 'AdminNewsController@rejectComment');
 $router->post('/admin/comments/delete', 'AdminNewsController@deleteComment');
 
-$router->get('/admin/users', 'AdminController@index');
-$router->get('/admin/users/add', 'AdminController@add');
-$router->post('/admin/users/add', 'AdminController@add');
-$router->get('/admin/users/edit', 'AdminController@edit');
-$router->post('/admin/users/edit', 'AdminController@edit');
-$router->get('/admin/users/delete', 'AdminController@delete');
+$router->get('/admin/users', 'AdminUserController@index');
+$router->get('/admin/users/add', 'AdminUserController@add');
+$router->post('/admin/users/add', 'AdminUserController@add');
+$router->get('/admin/users/edit', 'AdminUserController@edit');
+$router->post('/admin/users/edit', 'AdminUserController@edit');
+$router->get('/admin/users/delete', 'AdminUserController@delete');
 
 $router->get('/admin/settings/about', 'AdminController@editAbout');
 $router->post('/admin/settings/about', 'AdminController@editAbout');

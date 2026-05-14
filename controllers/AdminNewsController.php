@@ -229,6 +229,7 @@ class AdminNewsController extends Controller
         }
 
         $this->newsModel->update($id, [
+            'author_id' => Auth::id(),
             'title' => $title,
             'slug' => $slug,
             'description' => $description,
@@ -313,56 +314,56 @@ class AdminNewsController extends Controller
     /**
      * Duyệt bình luận
      */
-    public function approveComment(): void
-    {
-        $this->requireRole('admin');
+    // public function approveComment(): void
+    // {
+    //     $this->requireRole('admin');
 
-        $id = $_POST['id'] ?? null;
-        if (!$id) {
-            Session::flash('error', 'ID không hợp lệ.');
-            $this->redirect('/whey_web/admin/comments');
-            return;
-        }
+    //     $id = $_POST['id'] ?? null;
+    //     if (!$id) {
+    //         Session::flash('error', 'ID không hợp lệ.');
+    //         $this->redirect('/whey_web/admin/comments');
+    //         return;
+    //     }
 
-        $comment = $this->commentModel->findById($id);
-        if (!$comment) {
-            Session::flash('error', 'Bình luận không tồn tại.');
-            $this->redirect('/whey_web/admin/comments');
-            return;
-        }
+    //     $comment = $this->commentModel->findById($id);
+    //     if (!$comment) {
+    //         Session::flash('error', 'Bình luận không tồn tại.');
+    //         $this->redirect('/whey_web/admin/comments');
+    //         return;
+    //     }
 
-        $this->commentModel->updateStatus($id, 'approved');
+    //     $this->commentModel->updateStatus($id, 'approved');
 
-        Session::flash('success', 'Bình luận đã được duyệt.');
-        $this->redirect('/whey_web/admin/comments');
-    }
+    //     Session::flash('success', 'Bình luận đã được duyệt.');
+    //     $this->redirect('/whey_web/admin/comments');
+    // }
 
     /**
      * Từ chối bình luận
      */
-    public function rejectComment(): void
-    {
-        $this->requireRole('admin');
+    // public function rejectComment(): void
+    // {
+    //     $this->requireRole('admin');
 
-        $id = $_POST['id'] ?? null;
-        if (!$id) {
-            Session::flash('error', 'ID không hợp lệ.');
-            $this->redirect('/whey_web/admin/comments');
-            return;
-        }
+    //     $id = $_POST['id'] ?? null;
+    //     if (!$id) {
+    //         Session::flash('error', 'ID không hợp lệ.');
+    //         $this->redirect('/whey_web/admin/comments');
+    //         return;
+    //     }
 
-        $comment = $this->commentModel->findById($id);
-        if (!$comment) {
-            Session::flash('error', 'Bình luận không tồn tại.');
-            $this->redirect('/whey_web/admin/comments');
-            return;
-        }
+    //     $comment = $this->commentModel->findById($id);
+    //     if (!$comment) {
+    //         Session::flash('error', 'Bình luận không tồn tại.');
+    //         $this->redirect('/whey_web/admin/comments');
+    //         return;
+    //     }
 
-        $this->commentModel->updateStatus($id, 'rejected');
+    //     $this->commentModel->updateStatus($id, 'rejected');
 
-        Session::flash('success', 'Bình luận đã bị từ chối.');
-        $this->redirect('/whey_web/admin/comments');
-    }
+    //     Session::flash('success', 'Bình luận đã bị từ chối.');
+    //     $this->redirect('/whey_web/admin/comments');
+    // }
 
     /**
      * Xóa bình luận

@@ -28,9 +28,6 @@ class Comment extends Model
         return $stmt->fetchAll();
     }
 
-    /**
-     * Đếm bình luận được duyệt cho bài viết
-     */
     public function countApprovedComments(string $newsId): int
     {
         $sql = 'SELECT COUNT(*) as total FROM Comments WHERE news_id = :news_id AND status = :status';
@@ -60,7 +57,7 @@ class Comment extends Model
             'user_id' => $data['user_id'],
             'rating' => $data['rating'] ?? 0,
             'content' => $data['content'],
-            'status' => 'pending',
+            'status' => 'approved',
         ]);
 
         return $id;
