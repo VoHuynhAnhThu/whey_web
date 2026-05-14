@@ -1,26 +1,43 @@
 <?php
 class AdminProductController extends Controller {
+
+    //Check Auth tạm thời, xóa sau
+    public function __construct() {
+        // Kiểm tra xem đã đăng nhập chưa
+        if (!isset($_SESSION['auth_user'])) {
+            header('Location: /whey_web/login');
+            exit;
+        }
+
+        // Đã đăng nhập nhưng không phải admin thì đuổi về trang chủ
+        if ($_SESSION['auth_user']['role'] !== 'admin') {
+            header('Location: /whey_web/');
+            exit;
+        }
+    }
+ 
+
     public function index(): void {
-    $productModel = new Product();
-    
-    // 1. Cấu hình phân trang
-    $limit = 2; // Số sản phẩm trên mỗi trang
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    if ($page < 1) $page = 1;
-    $offset = ($page - 1) * $limit;
+        $productModel = new Product();
+        
+        // 1. Cấu hình phân trang
+        $limit = 2; // Số sản phẩm trên mỗi trang
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $offset = ($page - 1) * $limit;
 
-    // 2. Lấy dữ liệu
-    $products = $productModel->getPaginated($limit, $offset);
-    $totalRecords = $productModel->getTotalCount();
-    $totalPages = ceil($totalRecords / $limit);
+        // 2. Lấy dữ liệu
+        $products = $productModel->getPaginated($limit, $offset);
+        $totalRecords = $productModel->getTotalCount();
+        $totalPages = ceil($totalRecords / $limit);
 
-    // 3. Truyền dữ liệu sang View
-    $this->view('admin/products/index', [
-        'products' => $products,
-        'currentPage' => $page,
-        'totalPages' => $totalPages
-    ]);
-}
+        // 3. Truyền dữ liệu sang View
+        $this->view('admin/products/index', [
+            'products' => $products,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
+        ], 'admin');
+    }
 
     public function create(): void {
         $categoryModel = new Category();
@@ -29,7 +46,7 @@ class AdminProductController extends Controller {
         $this->view('admin/products/create', [
             'title' => 'Thêm sản phẩm mới',
             'categories' => $categories
-        ]);
+        ], 'admin');
     }
 
     // 2. Xử lý lưu dữ liệu vào Database (POST)[cite: 1]
@@ -108,7 +125,7 @@ class AdminProductController extends Controller {
         $this->view('admin/products/edit', [
             'product' => $product,
             'categories' => $categories
-        ]);
+        ], 'admin');
     }
 
     public function update(): void {
@@ -175,7 +192,18 @@ class AdminProductController extends Controller {
             if ($id) {
                 $productModel = new Product();
                 
-                // Gọi hàm xóa từ Model thay vì gọi DB trực tiếp
+                // 1. Chủ động lấy thông tin sản phẩm để tìm đường dẫn ảnh trước khi xóa khỏi DB
+                $product = $productModel->getFullProductById($id);
+                if ($product && !empty($product['image_url'])) {
+                    $imagePath = $product['image_url'];
+                    
+                    // Kiểm tra né ảnh mặc định và chắc chắn file có tồn tại trên thư mục thì mới xóa
+                    if ($imagePath !== 'uploads/products/default.png' && file_exists($imagePath)) {
+                        unlink($imagePath); // Lệnh xóa file vật lý khỏi folder
+                    }
+                }
+                
+                // 2. Gọi hàm xóa dữ liệu từ Model giống nguyên bản của bạn
                 if ($productModel->deleteProduct($id)) {
                     Session::flash('success', 'Đã xóa sản phẩm thành công.');
                 } else {

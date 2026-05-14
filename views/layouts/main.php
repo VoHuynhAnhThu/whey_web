@@ -113,6 +113,11 @@
                 <a href="/whey_web/">Trang chủ</a>
                 <a href="/whey_web/about">Giới thiệu</a>
                 <a href="/whey_web/products">Sản phẩm</a>
+                
+                <?php if ($currentUser !== null): ?>
+                    <a href="/whey_web/orders">Đơn hàng của tôi</a>
+                <?php endif; ?>
+
                 <a href="/whey_web/news">Tin tức</a>
                 <a href="/whey_web/contact">Liên hệ & Hỏi đáp</a>
             </nav>

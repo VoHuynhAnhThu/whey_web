@@ -1,5 +1,21 @@
 <?php
 class AdminOrderController extends Controller {
+
+    //Check Auth tạm thời, xóa sau
+    public function __construct() {
+        // Kiểm tra xem đã đăng nhập chưa
+        if (!isset($_SESSION['auth_user'])) {
+            header('Location: /whey_web/login');
+            exit;
+        }
+
+        // Đã đăng nhập nhưng không phải admin thì đuổi về trang chủ
+        if ($_SESSION['auth_user']['role'] !== 'admin') {
+            header('Location: /whey_web/');
+            exit;
+        }
+    }
+
     public function index(): void {
         $orderModel = new Order();
         
@@ -19,7 +35,7 @@ class AdminOrderController extends Controller {
             'orders' => $orders,
             'currentPage' => $page,
             'totalPages' => $totalPages
-        ]);
+        ], 'admin');
     }
     public function updateStatus(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -46,13 +62,20 @@ class AdminOrderController extends Controller {
         }
     }
 
-    public function detail($id): void {
+    public function detail(): void {
+        $id = $_GET['id'] ?? null;
+        
+        if (!$id) {
+            header('Location: /whey_web/admin/orders');
+            exit;
+        }
+
         $orderModel = new Order();
         $items = $orderModel->getOrderDetails($id);
         
         $this->view('admin/orders/detail', [
             'title' => 'Chi tiết đơn hàng',
             'items' => $items
-        ]);
+        ], 'admin');
     }
 }

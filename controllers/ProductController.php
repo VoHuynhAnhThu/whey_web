@@ -4,24 +4,36 @@ declare(strict_types=1);
 
 class ProductController extends Controller
 {
-    public function index(): void
-    {
+    public function index(): void {
         $productModel = new Product();
-        
         $keyword = $_GET['search'] ?? '';
 
+        // 1. Cấu hình phân trang
+        $limit = 8; 
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        $offset = ($page - 1) * $limit;
+
+        // 2. Lấy dữ liệu có giới hạn
         if (!empty($keyword)) {
-            $products = $productModel->search($keyword);
+            $products = $productModel->search($keyword, $limit, $offset);
+            $totalRecords = $productModel->countSearch($keyword);
             $title = "Kết quả tìm kiếm cho: " . htmlspecialchars($keyword);
         } else {
-            $products = $productModel->all();
+            $products = $productModel->getPaginated($limit, $offset);
+            $totalRecords = $productModel->getTotalCount();
             $title = "Tất cả sản phẩm";
         }
 
+        $totalPages = ceil($totalRecords / $limit);
+
+        // 3. Truyền thêm biến phân trang sang View
         $this->view('products/index', [
             'title' => $title,
             'products' => $products,
-            'keyword' => $keyword
+            'keyword' => $keyword,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
         ]);
     }
 
@@ -47,7 +59,7 @@ class ProductController extends Controller
         }
 
         // Truyền dữ liệu sang View detail.php
-        $this->view('public/products/detail', [
+        $this->view('products/detail', [
             'title' => $product['name'] . ' - Fitwhey',
             'product' => $product
         ]);

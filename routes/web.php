@@ -26,7 +26,7 @@ $router->get('/admin', 'AdminController@dashboard');
 //Trang danh sách sản phẩm
 $router->get('/products', 'ProductController@index');
 //Trang chi tiết sản phẩm và Giỏ hàng
-$router->get('/product', 'ProductController@show');
+$router->get('/products/detail', 'ProductController@show');
 $router->get('/cart', 'CartController@index');
 $router->post('/cart/add', 'CartController@add');
 $router->post('/cart/update', 'CartController@update');
@@ -49,7 +49,9 @@ $router->post('/admin/products/delete', 'AdminProductController@delete');
 // --- QUẢN LÝ ĐƠN HÀNG ---
 $router->get('/admin/orders', 'AdminOrderController@index');
 $router->post('/admin/orders/update-status', 'AdminOrderController@updateStatus');
-$router->get('/admin/orders/detail/{id}', 'AdminOrderController@detail');$router->get('/admin/settings', 'AdminController@settings');
+$router->get('/admin/orders/detail/', 'AdminOrderController@detail');
+
+$router->get('/admin/settings', 'AdminController@settings');
 $router->post('/admin/update-settings', 'AdminController@updateSettings');
 $router->post('/admin/settings/update', 'AdminController@updateSettings');
 $router->get('/admin/contacts', 'AdminController@listContacts');
