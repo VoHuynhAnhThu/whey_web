@@ -14,15 +14,21 @@ class AdminController extends Controller
 
     public function dashboard(): void
     {
+        // Lấy ID của người đang đăng nhập
+        $adminId = (string) Auth::id();
+        
+        // Lấy thông tin chi tiết (bao gồm full_name từ Profiles)
+        $currentAdmin = $this->userModel->findById($adminId);
+
         $this->view('admin/dashboard', [
             'title' => 'Admin Dashboard - FITWHEY',
-            'heading' => 'Admin Dashboard Placeholder',
+            'admin' => $currentAdmin, // Gửi dữ liệu admin sang View
         ], 'admin');
     }
 
+    // Trang Cài đặt chung (Logo, Hotline, Địa chỉ)
     public function settings(): void
     {
-        $this->requireRole('admin'); 
         $db = Database::connection(); 
         $settingModel = new SettingModel($db); 
 
@@ -38,8 +44,9 @@ class AdminController extends Controller
         ], 'admin');
     }
 
-    public function updateSettings(): void {
-        $this->requireRole('admin');
+    // Xử lý cập nhật Cài đặt chung
+    public function updateSettings(): void 
+    {
         $db = Database::connection();
         $model = new SettingModel($db);
 
@@ -76,15 +83,16 @@ class AdminController extends Controller
         }
     }
 
+    // FIX: Bổ sung lại hàm chỉnh sửa trang Giới thiệu (About)
     public function editAbout(): void
     {
         $db = Database::connection();
-        $settingModel = new SettingModel($db); // Đã fix đúng tên class [cite: 12]
+        $settingModel = new SettingModel($db);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settingsData = $_POST['settings'] ?? [];
             foreach ($settingsData as $key => $value) {
-                $settingModel->updateSetting($key, $value); // Dùng đúng hàm trong SettingModel [cite: 12]
+                $settingModel->updateSetting($key, $value);
             }
             $this->redirect('/whey_web/admin/settings/about?status=success');
         }
@@ -92,6 +100,7 @@ class AdminController extends Controller
         $rawSettings = $settingModel->getAllSettings();
         $aboutData = [];
         foreach ($rawSettings as $row) {
+            // Lọc ra các key bắt đầu bằng about_
             if (str_starts_with($row['key'], 'about_')) {
                 $aboutData[$row['key']] = $row['value'];
             }
@@ -100,12 +109,12 @@ class AdminController extends Controller
         $this->view('admin/settings/about', [
             'title' => 'Quản lý trang Giới thiệu - FITWHEY',
             'about' => $aboutData
-        ], 'admin'); // Đã thêm dấu ] đóng mảng và dùng layout admin
+        ], 'admin');
     }
 
+    // Quản lý liên hệ của khách hàng
     public function listContacts(): void
     {
-        $this->requireRole('admin');
         $db = Database::connection();
         $model = new ContactModel($db);
         
@@ -123,30 +132,34 @@ class AdminController extends Controller
             'contacts' => $contacts,
             'currentPage' => $page,
             'totalPages' => $totalPages
-        ], '');
+        ], 'admin');
     }
 
-    public function manageFaqs(): void {
+    // Quản lý FAQ
+    public function manageFaqs(): void 
+    {
         $questionModel = new Question();
         $this->view('admin/faqs/index', [
             'title' => 'Quản lý câu hỏi',
             'questions' => $questionModel->getAllWithAnswers()
-        ]);
+        ], 'admin');
     }
 
-    public function replyFaq(): void {
+    public function replyFaq(): void 
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $answerModel = new Answer();
             $answerModel->create([
                 'question_id' => $_POST['question_id'],
-                'user_id' => $_SESSION['user_id'],
+                'user_id' => $_SESSION['user_id'] ?? null,
                 'body' => $_POST['answer_body']
             ]);
             $this->redirect('/whey_web/admin/faqs?status=replied');
         }
     }
 
-    public function showReplyForm(): void {
+    public function showReplyForm(): void 
+    {
         $id = $_GET['id'] ?? '';
         $questionModel = new Question();
         $question = $questionModel->getById($id);
@@ -158,12 +171,11 @@ class AdminController extends Controller
         $this->view('admin/faqs/reply', [
             'title' => 'Phản hồi câu hỏi',
             'question' => $question
-        ]);
+        ], 'admin');
     }
 
     public function updateContactStatus(): void
     {
-        $this->requireRole('admin');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;
             $status = $_POST['status'] ?? 'read';
@@ -176,7 +188,6 @@ class AdminController extends Controller
 
     public function deleteContact(): void
     {
-        $this->requireRole('admin');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? null;
             $db = Database::connection();
@@ -185,4 +196,4 @@ class AdminController extends Controller
             $this->redirect('/whey_web/admin/contacts');
         }
     }
-} // Đã xóa các dấu ngoặc nhọn dư thừa ở đây
+}

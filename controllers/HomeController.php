@@ -26,14 +26,22 @@ class HomeController extends Controller
 
     public function about(): void
     {
-        $settingModel = new Settings();
-        $aboutData = $settingModel->getByPage('about');
+        $db = Database::connection();
+        $settingModel = new SettingModel($db);
+
+        // Lấy tất cả cài đặt
+        $rawSettings = $settingModel->getAllSettings();
+        $aboutData = [];
+        foreach ($rawSettings as $row) {
+            // Chỉ lấy các key liên quan đến trang giới thiệu (bắt đầu bằng about_)
+            if (str_starts_with($row['key'], 'about_')) {
+                $aboutData[$row['key']] = $row['value'];
+            }
+        }
 
         $this->view('public/about', [
-            'title' => 'About - FITWHEY',
-            'heading' => $aboutData['about_title'] ?? 'About us',
-            'content' => $aboutData['about_content'] ?? 'Nội dung đang cập nhật...',
-            'image' => $aboutData['about_image'] ?? ''
+            'title' => $aboutData['about_title'] ?? 'Giới thiệu - FITWHEY',
+            'about' => $aboutData
         ]);
     }
 
