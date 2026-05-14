@@ -22,15 +22,20 @@ class Settings extends Model
         return $result ? $result['value'] : null;
     }
 
-    public function updateValue(string $key, string $value): bool
-    {
-        $sql = "UPDATE Settings SET `value` = :value WHERE `key` = :key";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
-            'key'=>$key,
-            'value'=>$value
-        ]);
-    }
+    public function updateValue(string $key, string $value): bool 
+{
+    // Cấu trúc: INSERT ... ON DUPLICATE KEY UPDATE
+    $sql = "INSERT INTO Settings (`key`, `value`, `page`) 
+            VALUES (:key, :value, 'about') 
+            ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)";
+            
+    $stmt = $this->db->prepare($sql);
+    
+    return $stmt->execute([
+        'key' => $key,
+        'value' => $value
+    ]);
+}
 
     public function getAll(): array
     {

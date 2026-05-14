@@ -24,26 +24,20 @@ class HomeController extends Controller
     ], 'main');
 }
 
+    
     public function about(): void
-    {
-        $db = Database::connection();
-        $settingModel = new SettingModel($db);
+{
+    $settingModel = new Settings();
+    
+    $aboutData = $settingModel->getByPage('about');
 
-        // Lấy tất cả cài đặt
-        $rawSettings = $settingModel->getAllSettings();
-        $aboutData = [];
-        foreach ($rawSettings as $row) {
-            // Chỉ lấy các key liên quan đến trang giới thiệu (bắt đầu bằng about_)
-            if (str_starts_with($row['key'], 'about_')) {
-                $aboutData[$row['key']] = $row['value'];
-            }
-        }
-
-        $this->view('public/about', [
-            'title' => $aboutData['about_title'] ?? 'Giới thiệu - FITWHEY',
-            'about' => $aboutData
-        ]);
-    }
+    $this->view('public/about', [
+        'title' => 'About - FITWHEY',
+        'heading' => $aboutData['about_title'] ?? 'About us',
+        'content' => $aboutData['about_content'] ?? 'Nội dung đang cập nhật...',
+        'image' => $aboutData['about_image'] ?? ''
+    ]);
+}
 
     public function faq(): void {
     $questionModel = new Question();

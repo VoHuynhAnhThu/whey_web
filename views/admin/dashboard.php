@@ -63,13 +63,18 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-10">
-            <a href="/whey_web/admin/faqs" class="dashboard-widget bg-faq py-3">
-                <div class="d-flex align-items-center">
-                    <i class="ti-help-alt widget-icon fs-4"></i>
-                    <span class="fw-bold">Quản lý câu hỏi (FAQ)</span>
-                </div>
-            </a>
-        </div>
+        <a href="admin/settings/about" style="padding: 12px 20px; background-color: #F39C12; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+            <span>📝</span> Chỉnh sửa trang Giới thiệu
+        </a>
+
+
+        <a href="/whey_web/admin/faqs" style="padding: 12px 20px; background-color: #9B59B6; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: opacity 0.3s;">
+            <span>❓</span> Quản lý câu hỏi (FAQ)
+        </a>
+        
+        <a href="/whey_web/admin/users" style="padding: 12px 20px; background-color: #3498DB; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: opacity 0.3s;">
+    <span>👥</span> Quản lý người dùng
+</a>
+
     </div>
 </div>
