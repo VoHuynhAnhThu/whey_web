@@ -54,7 +54,7 @@ class Question extends Model
     /**
      * Xóa một câu hỏi dựa vào ID
      */
-    public function delete($id)
+    public function delete($id):bool
     {
         // 1. (Tùy chọn) Xóa các câu trả lời thuộc về câu hỏi này trước 
         // để tránh lỗi khóa ngoại (Foreign Key) nếu Database chưa set CASCADE DELETE
