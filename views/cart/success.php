@@ -1,23 +1,45 @@
-<div style="padding: 60px 0; text-align: center;">
-    <div class="card" style="max-width: 600px; margin: 0 auto; padding: 40px;">
-        <div style="width: 80px; height: 80px; background: #ecfdf5; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 40px;">
-            ✓
+<div class="success-page-container py-5">
+    <div class="card shadow-sm border-0 rounded-4 max-w-600 mx-auto overflow-hidden">
+        <div class="success-banner py-5 text-center" style="background-color: #ecfdf5;">
+            <div class="success-icon-circle mx-auto d-flex align-items-center justify-content-center mb-3 shadow-sm" 
+                 style="width: 100px; height: 100px; background: white; color: var(--fit-primary); border-radius: 50%; font-size: 50px;">
+                <i class="bi bi-check-lg"></i>
+            </div>
+            <h2 class="fw-800 text-dark mb-1">ĐẶT HÀNG THÀNH CÔNG!</h2>
+            <div class="badge bg-success px-3 py-2 rounded-pill">Mã đơn: #FW<?= time() ?></div>
         </div>
         
-        <h1 style="color: var(--text); margin-bottom: 16px;">Đặt hàng thành công!</h1>
-        <p style="color: #6b7280; font-size: 1.1rem; line-height: 1.6; margin-bottom: 32px;">
-            Cảm ơn bạn đã tin tưởng Fitwhey. <br>
-            Mã đơn hàng của bạn là: <strong>#FW<?= time() ?></strong>. <br>
-            Chúng tôi sẽ liên hệ với bạn để xác nhận trong thời gian sớm nhất.
-        </p>
+        <div class="card-body p-5 text-center">
+            <p class="text-muted fs-5 mb-4" style="line-height: 1.6;">
+                Cảm ơn bạn đã tin tưởng <strong>FITWHEY</strong>. <br>
+                Đơn hàng của bạn đã được hệ thống ghi nhận và đang trong quá trình chuẩn bị. Chúng tôi sẽ sớm liên hệ để xác nhận thông tin giao hàng.
+            </p>
 
-        <div style="display: flex; gap: 15px; justify-content: center;">
-            <a href="/whey_web/products" style="text-decoration: none; background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600;">
-                Tiếp tục mua sắm
-            </a>
-            <a href="/whey_web/" style="text-decoration: none; background: var(--text); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600;">
-                Về trang chủ
-            </a>
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <a href="/whey_web/products" class="btn btn-outline-success w-100 py-3 rounded-3 fw-bold">
+                        <i class="bi bi-bag me-2"></i> TIẾP TỤC MUA SẮM
+                    </a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="/whey_web/" class="btn btn-fit-primary w-100 py-3 rounded-3 fw-bold">
+                        <i class="bi bi-house me-2"></i> VỀ TRANG CHỦ
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-5 pt-4 border-top">
+                <p class="small text-muted m-0">
+                    Bạn có thắc mắc? Liên hệ hỗ trợ ngay: <strong>0123 456 789</strong>
+                </p>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    .max-w-600 { max-width: 650px; }
+    .fw-800 { font-weight: 800; }
+    .btn-fit-primary { background-color: var(--fit-primary); color: white; border: none; }
+    .btn-fit-primary:hover { background-color: #059669; color: white; }
+</style>

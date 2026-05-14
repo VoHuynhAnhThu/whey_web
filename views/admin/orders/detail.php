@@ -1,30 +1,43 @@
-<div class="card" style="margin: 20px; padding: 20px;">
-    <h3>Chi tiết sản phẩm trong đơn hàng</h3>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
-        <thead>
-            <tr style="background: #f4f4f4;">
-                <th style="padding: 10px;">Hình ảnh</th>
-                <th style="padding: 10px;">Tên sản phẩm</th>
-                <th style="padding: 10px;">Giá mua</th>
-                <th style="padding: 10px;">Số lượng</th>
-                <th style="padding: 10px;">Thành tiền</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($items as $item): ?>
-            <tr>
-                <td style="padding: 10px;"><img src="<?= $item['image_url'] ?>" width="50"></td>
-                <td style="padding: 10px;"><?= htmlspecialchars($item['name']) ?></td>
-                <td style="padding: 10px;"><?= number_format($item['price'], 0, ',', '.') ?>đ</td>
-                <td style="padding: 10px;"><?= $item['quantity'] ?></td>
-                <td style="padding: 10px; font-weight: bold;">
-                    <?= number_format($item['price'] * $item['quantity'], 0, ',', '.') ?>đ
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div style="margin-top: 20px;">
-        <a href="/whey_web/admin/orders"> Quay lại danh sách</a>
+<div class="card mt-4">
+    <div class="card-body">
+        <h3 class="header-title mb-4">Chi tiết sản phẩm trong đơn hàng</h3>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" style="width: 100px;">Hình ảnh</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Giá mua</th>
+                        <th scope="col" style="width: 100px; text-align: center;">Số lượng</th>
+                        <th scope="col">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($items as $item): ?>
+                    <tr>
+                        <td>
+                            <img src="/whey_web/<?= htmlspecialchars($item['image_url'] ?? '') ?>" 
+                                 width="60" class="img-thumbnail" alt="Product image">
+                        </td>
+                        <td class="fw-bold text-secondary"><?= htmlspecialchars($item['name']) ?></td>
+                        <td><?= number_format($item['price'], 0, ',', '.') ?>đ</td>
+                        <td style="text-align: center;">
+                            <span class="badge bg-secondary px-3 py-2 fs-6"><?= $item['quantity'] ?></span>
+                        </td>
+                        <td class="fw-bold text-primary">
+                            <?= number_format($item['price'] * $item['quantity'], 0, ',', '.') ?>đ
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-4">
+            <a href="/whey_web/admin/orders" class="btn btn-secondary btn-sm px-3">
+                <i class="ti-arrow-left me-1"></i> Quay lại danh sách
+            </a>
+        </div>
     </div>
 </div>

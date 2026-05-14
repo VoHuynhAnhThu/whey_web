@@ -1,86 +1,83 @@
-<div class="container" style="padding: 20px; max-width: 1000px; margin: 0 auto;">
-    <form action="/whey_web/admin/products/store" method="POST" enctype="multipart/form-data" class="card">
-        <h2 style="margin-bottom: 25px; border-bottom: 2px solid var(--primary); padding-bottom: 10px;">Thêm sản phẩm mới</h2>
+<div class="card mt-4 mb-4">
+    <div class="card-body">
+        <h4 class="header-title mb-4 border-bottom pb-2">Thêm sản phẩm mới</h4>
+        
+        <form action="/whey_web/admin/products/store" method="POST" enctype="multipart/form-data">
+            
+            <h5 class="text-primary mb-3"><i class="ti-info-alt me-1"></i> 1. Thông tin cơ bản</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold small text-secondary">Tên sản phẩm:</label>
+                    <input type="text" name="name" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold small text-secondary">Danh mục:</label>
+                    <select name="category_id" class="form-select form-select-sm">
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold small text-secondary">Giá niêm yết (Price):</label>
+                    <input type="number" name="price" step="0.01" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold small text-secondary">Giá khuyến mãi (Sale Price):</label>
+                    <input type="number" name="sale_price" step="0.01" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold small text-secondary">Số lượng kho (Stock):</label>
+                    <input type="number" name="stock_quantity" value="0" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold small text-secondary">Hương vị (Flavor):</label>
+                    <input type="text" name="flavor" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label fw-bold small text-secondary">Mô tả sản phẩm:</label>
+                    <textarea name="description" rows="4" class="form-control"></textarea>
+                </div>
+            </div>
 
-        <!-- PHẦN 1: THÔNG TIN CƠ BẢN (Bảng Products)[cite: 1] -->
-        <h3 style="color: var(--primary);">1. Thông tin cơ bản</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
-            <div>
-                <label>Tên sản phẩm:</label>
-                <input type="text" name="name" required style="width: 100%; padding: 8px; margin-top: 5px;">
+            <h5 class="text-primary mb-3"><i class="ti-heart-broken me-1"></i> 2. Chỉ số dinh dưỡng</h5>
+            <div class="row g-3 p-3 bg-light rounded mb-4">
+                <div class="col-md-4">
+                    <label class="form-label small text-secondary">Serving Size:</label>
+                    <input type="number" name="serving_size" step="0.01" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-secondary">Đơn vị (g/scoop):</label>
+                    <input type="text" name="serving_unit" placeholder="g" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-secondary">Calories:</label>
+                    <input type="number" name="calories" step="0.1" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-secondary">Protein (g):</label>
+                    <input type="number" name="protein" step="0.1" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-secondary">Carbs (g):</label>
+                    <input type="number" name="carbs" step="0.1" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-secondary">Fat (g):</label>
+                    <input type="number" name="fat" step="0.1" class="form-control form-control-sm">
+                </div>
             </div>
-            <div>
-                <label>Danh mục:</label>
-                <select name="category_id" style="width: 100%; padding: 8px; margin-top: 5px;">
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div>
-                <label>Giá niêm yết (Price):</label>
-                <input type="number" name="price" step="0.01" required style="width: 100%; padding: 8px; margin-top: 5px;">
-            </div>
-            <div>
-                <label>Giá khuyến mãi (Sale Price):</label>
-                <input type="number" name="sale_price" step="0.01" style="width: 100%; padding: 8px; margin-top: 5px;">
-            </div>
-            <div>
-                <label>Số lượng kho (Stock):</label>
-                <input type="number" name="stock_quantity" value="0" style="width: 100%; padding: 8px; margin-top: 5px;">
-            </div>
-            <div>
-                <label>Hương vị (Flavor):</label>
-                <input type="text" name="flavor" style="width: 100%; padding: 8px; margin-top: 5px;">
-            </div>
-            <div style="margin-top: 20px;">
-                <label>Mô tả sản phẩm:</label>
-                <textarea name="description" rows="4" style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
-            </div>
-        </div>
 
-        <!-- PHẦN 2: THÔNG TIN DINH DƯỠNG (Bảng Product_Nutrition)[cite: 1] -->
-        <h3 style="color: var(--primary);">2. Chỉ số dinh dưỡng</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 30px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
-            <div>
-                <label>Serving Size:</label>
-                <input type="number" name="serving_size" step="0.01" required style="width: 100%; padding: 8px;">
+            <h5 class="text-primary mb-3"><i class="ti-image me-1"></i> 3. Hình ảnh sản phẩm</h5>
+            <div class="p-3 border rounded border-dashed bg-light mb-4" style="border-style: dashed !important;">
+                <label class="form-label small text-muted">Chọn ảnh từ máy tính:</label>
+                <input type="file" name="product_image" class="form-control" accept="image/*" required>
             </div>
-            <div>
-                <label>Đơn vị (g/scoop):</label>
-                <input type="text" name="serving_unit" placeholder="g" required style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Calories:</label>
-                <input type="number" name="calories" step="0.1" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Protein (g):</label>
-                <input type="number" name="protein" step="0.1" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Carbs (g):</label>
-                <input type="number" name="carbs" step="0.1" style="width: 100%; padding: 8px;">
-            </div>
-            <div>
-                <label>Fat (g):</label>
-                <input type="number" name="fat" step="0.1" style="width: 100%; padding: 8px;">
-            </div>
-        </div>
 
-        <!-- PHẦN 3: HÌNH ẢNH (Bảng Product_Images)[cite: 1] -->
-        <h3 style="color: var(--primary); margin-top: 25px;">3. Hình ảnh sản phẩm</h3>
-        <div style="margin-bottom: 30px; background: #f0fdf4; padding: 15px; border-radius: 5px; border: 1px dashed var(--primary);">
-            <label>Chọn ảnh từ máy tính:</label>
-            <!-- Đổi type="text" thành type="file"[cite: 2] -->
-            <input type="file" name="product_image" accept="image/*" required style="width: 100%; margin-top: 10px;">
-        </div>
-
-        <div style="text-align: right;">
-            <a href="/whey_web/admin/products" style="margin-right: 15px; text-decoration: none; color: #666;">Hủy bỏ</a>
-            <button type="submit" style="padding: 10px 30px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                LƯU SẢN PHẨM
-            </button>
-        </div>
-    </form>
+            <div class="text-end">
+                <a href="/whey_web/admin/products" class="btn btn-light btn-sm px-4 me-2 border">Hủy bỏ</a>
+                <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold">LƯU SẢN PHẨM</button>
+            </div>
+        </form>
+    </div>
 </div>

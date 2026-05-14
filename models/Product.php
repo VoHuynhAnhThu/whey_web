@@ -279,10 +279,11 @@ public function getAllProductsAdmin($search = '', $limit = 10, $offset = 0) {
     }
 
     public function getPaginated(int $limit, int $offset): array {
-        $sql = "SELECT p.*, c.name as category_name, pi.url as image_url 
+        $sql = "SELECT p.*, c.name as category_name, pi.url 
                 FROM Products p
                 LEFT JOIN Categories c ON p.category_id = c.id
                 LEFT JOIN Product_Images pi ON p.id = pi.product_id AND pi.is_main = 1
+                WHERE p.is_active = 1
                 ORDER BY p.created_at DESC
                 LIMIT :limit OFFSET :offset";
                 
@@ -290,11 +291,20 @@ public function getAllProductsAdmin($search = '', $limit = 10, $offset = 0) {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Đếm tổng số sản phẩm để tính số trang
+    public function countSearch(string $keyword): int {
+        $sql = "SELECT COUNT(*) FROM Products 
+                WHERE (name LIKE :keyword OR description LIKE :keyword) 
+                AND is_active = 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['keyword' => "%$keyword%"]);
+        return (int)$stmt->fetchColumn();
+    }
+
     public function getTotalCount(): int {
         return (int)$this->db->query("SELECT COUNT(*) FROM Products")->fetchColumn();
     }
+
 }
