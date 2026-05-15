@@ -5,18 +5,21 @@
                 <div class="row g-0">
                     <?php if (!empty($about['about_image'])): ?>
                         <div class="col-md-5">
-                            <img src="/whey_web/public/uploads/<?= htmlspecialchars($about['about_image']) ?>" 
-                                 class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 400px;" alt="About FITWHEY">
+                            <img src="<?= asset('uploads/' . htmlspecialchars($about['about_image'])) ?>"
+                                class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 400px;"
+                                alt="About FITWHEY">
                         </div>
                     <?php endif; ?>
-                    
+
                     <div class="<?= !empty($about['about_image']) ? 'col-md-7' : 'col-12' ?> p-5">
-                        <h1 class="fw-bold mb-4" style="color: #333; border-bottom: 3px solid #10B981; display: inline-block; padding-bottom: 10px;">
+                        <h1 class="fw-bold mb-4"
+                            style="color: #333; border-bottom: 3px solid #10B981; display: inline-block; padding-bottom: 10px;">
                             <?= htmlspecialchars($about['about_title'] ?? 'Giới thiệu về chúng tôi') ?>
                         </h1>
-                        
+
                         <?php if (!empty($about['about_slogan'])): ?>
-                            <p class="text-muted fst-italic mb-4" style="border-left: 4px solid #10B981; padding-left: 15px; font-size: 1.1rem;">
+                            <p class="text-muted fst-italic mb-4"
+                                style="border-left: 4px solid #10B981; padding-left: 15px; font-size: 1.1rem;">
                                 "<?= htmlspecialchars($about['about_slogan']) ?>"
                             </p>
                         <?php endif; ?>

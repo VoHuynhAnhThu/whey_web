@@ -25,7 +25,23 @@ class Comment extends Model
             // 'offset' => $offset,
         ]);
 
-        return $stmt->fetchAll();
+        $rows = $stmt->fetchAll();
+
+        // Normalize avatar URLs to full public URLs using asset(), keeping absolute URLs intact
+        foreach ($rows as &$r) {
+            $avatar = trim((string) ($r['user_avatar'] ?? ''));
+            if ($avatar === '') {
+                $r['user_avatar'] = '';
+                continue;
+            }
+            if (filter_var($avatar, FILTER_VALIDATE_URL)) {
+                $r['user_avatar'] = $avatar;
+            } else {
+                $r['user_avatar'] = asset('uploads/avatars/' . basename($avatar));
+            }
+        }
+
+        return $rows;
     }
 
     public function countApprovedComments(string $newsId): int

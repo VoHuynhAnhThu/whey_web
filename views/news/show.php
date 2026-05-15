@@ -58,7 +58,17 @@
                         <div class="comment-header">
                             <div class="comment-author">
                                 <?php if (!empty($comment['user_avatar'])): ?>
-                                    <img src="<?= htmlspecialchars($comment['user_avatar'], ENT_QUOTES, 'UTF-8') ?>"
+                                    <?php
+                                    $avatar = $comment['user_avatar'];
+                                    if (filter_var($avatar, FILTER_VALIDATE_URL)) {
+                                        $avatarSrc = $avatar;
+                                    } else {
+                                        // use basename to avoid duplicated segments
+                                        $fileName = basename($avatar);
+                                        $avatarSrc = asset('uploads/avatars/' . $fileName);
+                                    }
+                                    ?>
+                                    <img src="<?= htmlspecialchars($avatarSrc, ENT_QUOTES, 'UTF-8') ?>"
                                         alt="<?= htmlspecialchars($comment['user_name'] ?? 'Anonymous', ENT_QUOTES, 'UTF-8') ?>"
                                         class="comment-avatar">
                                 <?php else: ?>
@@ -191,7 +201,8 @@
 
     .featured-image {
         margin: -20px -20px 30px -20px;
-        height: 400px;           /* hoặc 500px theo thiết kế */
+        height: 400px;
+        /* hoặc 500px theo thiết kế */
         overflow: hidden;
     }
 

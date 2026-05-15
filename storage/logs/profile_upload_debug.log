@@ -21,3 +21,49 @@
 )
 
 2026-05-15T08:04:24+07:00 - UPDATE: success
+2026-05-15T08:29:31+07:00 - FILES: Array
+(
+    [avatar] => Array
+        (
+            [name] => 624830544_1326979939458795_5510368999672095048_n.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\php8C2B.tmp
+            [error] => 0
+            [size] => 58587
+        )
+
+)
+
+2026-05-15T08:29:31+07:00 - PAYLOAD: Array
+(
+    [full_name] => thư
+    [avatar_url] => /uploads/avatars/avatar_1778808571_6a0676fbb7d47.jpg
+    [phone] => 0123456789
+    [address] => 2
+    [bio] => 2
+)
+
+2026-05-15T08:29:31+07:00 - UPDATE: success
+2026-05-15T08:40:19+07:00 - FILES: Array
+(
+    [avatar] => Array
+        (
+            [name] => 624830544_1326979939458795_5510368999672095048_n.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\php6ECF.tmp
+            [error] => 0
+            [size] => 58587
+        )
+
+)
+
+2026-05-15T08:40:19+07:00 - PAYLOAD: Array
+(
+    [full_name] => thư
+    [avatar_url] => avatar_1778809219_6a067983902f6.jpg
+    [phone] => 0123456789
+    [address] => 2
+    [bio] => 2
+)
+
+2026-05-15T08:40:19+07:00 - UPDATE: success

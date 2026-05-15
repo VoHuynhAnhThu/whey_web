@@ -117,7 +117,7 @@ class ProfileController extends Controller
             return ['path' => null, 'error' => 'Không thể lưu file lên server.'];
         }
 
-        // Return a consistent public path (leading slash) for storage in DB
-        return ['path' => '/uploads/avatars/' . $fileName, 'error' => null];
+        // Return only filename for DB storage; views will build the public URL via asset()
+        return ['path' => $fileName, 'error' => null];
     }
 }
