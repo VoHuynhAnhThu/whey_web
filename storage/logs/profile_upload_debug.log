@@ -1,0 +1,23 @@
+2026-05-15T08:04:24+07:00 - FILES: Array
+(
+    [avatar] => Array
+        (
+            [name] => 624830544_1326979939458795_5510368999672095048_n.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\php8B10.tmp
+            [error] => 0
+            [size] => 58587
+        )
+
+)
+
+2026-05-15T08:04:24+07:00 - PAYLOAD: Array
+(
+    [full_name] => thư
+    [avatar_url] => /uploads/avatars/avatar_1778807064_6a06711823125.jpg
+    [phone] => 0123456789
+    [address] => 2
+    [bio] => 2
+)
+
+2026-05-15T08:04:24+07:00 - UPDATE: success

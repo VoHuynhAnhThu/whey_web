@@ -54,13 +54,31 @@ class ProfileController extends Controller
             $avatarUrl = (string) $upload['path'];
         }
 
-        $userModel->updateProfile($userId, [
+        // DEBUG: log upload and payload
+        $debugDir = __DIR__ . '/../storage/logs/';
+        if (!is_dir($debugDir)) {
+            @mkdir($debugDir, 0777, true);
+        }
+        @file_put_contents($debugDir . 'profile_upload_debug.log', date('c') . " - FILES: " . print_r($_FILES, true) . "\n", FILE_APPEND);
+
+        $payload = [
             'full_name' => $fullName,
             'avatar_url' => $avatarUrl,
             'phone' => $phone,
             'address' => $address,
             'bio' => $bio,
-        ]);
+        ];
+
+        @file_put_contents($debugDir . 'profile_upload_debug.log', date('c') . " - PAYLOAD: " . print_r($payload, true) . "\n", FILE_APPEND);
+
+        try {
+            $userModel->updateProfile($userId, $payload);
+            @file_put_contents($debugDir . 'profile_upload_debug.log', date('c') . " - UPDATE: success\n", FILE_APPEND);
+        } catch (Exception $e) {
+            @file_put_contents($debugDir . 'profile_upload_debug.log', date('c') . " - UPDATE ERROR: " . $e->getMessage() . "\n", FILE_APPEND);
+            Session::flash('error', 'Lỗi khi cập nhật hồ sơ.');
+            $this->redirect('/whey_web/profile');
+        }
 
         Session::flash('success', 'Cập nhật hồ sơ thành công.');
         $this->redirect('/whey_web/profile');
@@ -68,8 +86,13 @@ class ProfileController extends Controller
 
     private function handleAvatarUpload(array $file): array
     {
-        $tmpName = (string) $file['tmp_name'];
-        if ((int) $file['size'] > 2 * 1024 * 1024) {
+        $tmpName = (string) ($file['tmp_name'] ?? '');
+
+        if (empty($tmpName) || !is_uploaded_file($tmpName)) {
+            return ['path' => null, 'error' => 'Không có file được upload.'];
+        }
+
+        if ((int) ($file['size'] ?? 0) > 2 * 1024 * 1024) {
             return ['path' => null, 'error' => 'Avatar tối đa 2MB.'];
         }
 
@@ -81,19 +104,20 @@ class ProfileController extends Controller
             return ['path' => null, 'error' => 'Avatar chỉ hỗ trợ JPG, PNG, WEBP.'];
         }
 
-        // SỬA ĐƯỜNG DẪN: Lưu vào thư mục public để trình duyệt có thể truy cập
-        $uploadDir = './public/uploads/avatars/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
+        // Save under project public uploads so web server can serve it
+        $uploadDir = __DIR__ . '/../public/uploads/avatars/';
+        if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true) && !is_dir($uploadDir)) {
+            return ['path' => null, 'error' => 'Không thể tạo thư mục lưu ảnh.'];
         }
 
         $fileName = 'avatar_' . time() . '_' . uniqid() . '.' . $allowed[$mime];
         $target = $uploadDir . $fileName;
 
-        if (move_uploaded_file($tmpName, $target)) {
-            return ['path' => 'avatars/' . $fileName, 'error' => null];
+        if (!move_uploaded_file($tmpName, $target)) {
+            return ['path' => null, 'error' => 'Không thể lưu file lên server.'];
         }
 
+        // Return a consistent public path (leading slash) for storage in DB
         return ['path' => '/uploads/avatars/' . $fileName, 'error' => null];
     }
 }
