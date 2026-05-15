@@ -12,32 +12,42 @@ class AdminController extends Controller
         $this->userModel = new User();
     }
 
+    // ================= DASHBOARD =================
+    
+    public function index(): void
+    {
+        // Gọi thẳng vào hàm dashboard để tránh lỗi "Method index not found"
+        $this->dashboard();
+    }
+
     public function dashboard(): void
     {
         // Lấy ID của người đang đăng nhập
         $adminId = (string) Auth::id();
-
+        
         // Lấy thông tin chi tiết (bao gồm full_name từ Profiles)
         $currentAdmin = $this->userModel->findById($adminId);
 
         $this->view('admin/dashboard', [
             'title' => 'Admin Dashboard - FITWHEY',
-            'heading' => 'Admin Dashboard Placeholder',
+            'admin' => $currentAdmin,
         ], 'admin');
     }
 
+    // ================= QUẢN LÝ NGƯỜI DÙNG =================
 
-    public function index()
+    public function users(): void
     {
         $allUsers = $this->userModel->getAll();
-
-        return $this->view('admin/users/index', [
+        
+        // Đã thêm tham số 'admin' để load đúng giao diện sidebar
+        $this->view('admin/users/index', [
             'users' => $allUsers,
-            'title' => 'Quản lý người dùng'
-        ]);
+            'title' => 'Quản lý người dùng - FITWHEY'
+        ], 'admin'); 
     }
 
-    public function add()
+    public function add(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
@@ -47,46 +57,21 @@ class AdminController extends Controller
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
             $this->userModel->create($email, $passwordHash, $role);
-            header('Location: /whey_web/admin/users/add');
-            exit;
+            $this->redirect('/whey_web/admin/users');
         }
 
-        return $this->view('admin/users/add', ['title' => 'Thêm người dùng mới']);
+        $this->view('admin/users/add', [
+            'title' => 'Thêm người dùng mới - FITWHEY'
+        ], 'admin');
     }
 
-    public function delete(): void
-    {
-
-        $id = $_GET['id'] ?? '';
-
-
-        $currentAdminId = $_SESSION['auth_user']['id'] ?? '';
-
-
-        if (empty($id)) {
-            header('Location: /whey_web/admin/users');
-            exit;
-        }
-
-        if ($id === $currentAdminId) {
-            header('Location: /whey_web/admin/users?error=self_delete');
-            exit;
-        }
-
-        $this->userModel->delete($id);
-
-        header('Location: /whey_web/admin/users?status=deleted');
-        exit;
-    }
-
-    public function edit()
+    public function edit(): void 
     {
         $id = $_GET['id'] ?? '';
         $user = $this->userModel->findById($id);
 
         if (!$user) {
-            header('Location: /whey_web/admin/users');
-            exit;
+            $this->redirect('/whey_web/admin/users');
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -96,13 +81,16 @@ class AdminController extends Controller
                 'status' => $_POST['status']
             ];
             $this->userModel->updateAccount($id, $data);
-            header('Location: /whey_web/admin/users');
-            exit;
+            $this->redirect('/whey_web/admin/users');
         }
 
-        return $this->view('admin/users/edit', ['user' => $user]);
+        $this->view('admin/users/edit', [
+            'title' => 'Sửa thông tin người dùng - FITWHEY',
+            'user' => $user
+        ], 'admin');
     }
 
+    // Trang Cài đặt chung (Logo, Hotline, Địa chỉ)
     public function settings(): void
     {
         $db = Database::connection();
@@ -120,7 +108,7 @@ class AdminController extends Controller
         ], 'admin');
     }
 
-    public function updateSettings(): void
+    public function updateSettings(): void 
     {
         $this->requireRole('admin');
         $db = Database::connection();
@@ -203,26 +191,49 @@ class AdminController extends Controller
     //     ]);
     // }
 
-    // FIX: Bổ sung lại hàm chỉnh sửa trang Giới thiệu (About)
     public function editAbout(): void
     {
         $db = Database::connection();
         $settingModel = new SettingModel($db);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Cập nhật nội dung Text
             $settingsData = $_POST['settings'] ?? [];
             foreach ($settingsData as $key => $value) {
-                $settingModel->updateSetting($key, $value);
+                $cleanValue = htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+                $settingModel->updateSetting($key, $cleanValue);
             }
+
+            // Xử lý Upload Ảnh Minh Họa
+            if (isset($_FILES['about_image_file']) && $_FILES['about_image_file']['error'] === UPLOAD_ERR_OK) {
+                $fileTmpPath = $_FILES['about_image_file']['tmp_name'];
+                $fileName = $_FILES['about_image_file']['name'];
+                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                if (in_array($fileExtension, $allowedExtensions)) {
+                    $newFileName = 'about_' . time() . '.' . $fileExtension;
+                    $uploadFileDir = './public/uploads/';
+                    $dest_path = $uploadFileDir . $newFileName;
+
+                    if (!is_dir($uploadFileDir)) {
+                        mkdir($uploadFileDir, 0777, true);
+                    }
+
+                    if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                        $settingModel->updateSetting('about_image', $newFileName);
+                    }
+                }
+            }
+
             $this->redirect('/whey_web/admin/settings/about?status=success');
         }
 
         $rawSettings = $settingModel->getAllSettings();
         $aboutData = [];
         foreach ($rawSettings as $row) {
-            // Lọc ra các key bắt đầu bằng about_
             if (str_starts_with($row['key'], 'about_')) {
-                $aboutData[$row['key']] = $row['value'];
+                $aboutData[$row['key']] = htmlspecialchars_decode($row['value'], ENT_QUOTES);
             }
         }
 
@@ -232,7 +243,8 @@ class AdminController extends Controller
         ], 'admin');
     }
 
-    // Quản lý liên hệ của khách hàng
+    // ================= QUẢN LÝ LIÊN HỆ =================
+
     public function listContacts(): void
     {
         $db = Database::connection();
@@ -256,8 +268,32 @@ class AdminController extends Controller
         ], 'admin');
     }
 
-    // Quản lý FAQ
-    public function manageFaqs(): void
+    public function updateContactStatus(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'] ?? null;
+            $status = $_POST['status'] ?? 'read';
+            $db = Database::connection();
+            $model = new ContactModel($db);
+            $model->updateStatus((int)$id, $status);
+            $this->redirect('/whey_web/admin/contacts');
+        }
+    }
+
+    public function deleteContact(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'] ?? null;
+            $db = Database::connection();
+            $model = new ContactModel($db);
+            $model->deleteContact((int)$id);
+            $this->redirect('/whey_web/admin/contacts');
+        }
+    }
+
+    // ================= QUẢN LÝ FAQs =================
+
+    public function manageFaqs(): void 
     {
         $questionModel = new Question();
         $this->view('admin/faqs/index', [
@@ -272,7 +308,7 @@ class AdminController extends Controller
             $answerModel = new Answer();
             $answerModel->create([
                 'question_id' => $_POST['question_id'],
-                'user_id' => $_SESSION['user_id'] ?? null,
+                'user_id' => Auth::id(),
                 'body' => $_POST['answer_body']
             ]);
             $this->redirect('/whey_web/admin/faqs?status=replied');
@@ -295,27 +331,78 @@ class AdminController extends Controller
         ], 'admin');
     }
 
-    public function updateContactStatus(): void
+    public function createFaqForm(): void 
+    {
+        $this->view('admin/faqs/create', [
+            'title' => 'Thêm câu hỏi mới (FAQ)'
+        ], 'admin');
+    }
+
+    // Xử lý lưu câu hỏi (và cả câu trả lời nếu có) vào Database
+    public function storeFaq(): void 
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'] ?? null;
-            $status = $_POST['status'] ?? 'read';
-            $db = Database::connection();
-            $model = new ContactModel($db);
-            $model->updateStatus((int) $id, $status);
-            $this->redirect('/whey_web/admin/contacts');
+            $questionModel = new Question();
+            $answerModel = new Answer();
+
+            $title = trim($_POST['title'] ?? '');
+            $body = trim($_POST['body'] ?? '');
+            $answerBody = trim($_POST['answer_body'] ?? '');
+
+            if (!empty($title)) {
+                // LẤY ID NGƯỜI ĐĂNG NHẬP (Lưu ý: Đảm bảo biến session của bạn tên là 'user_id')
+                $currentUserId = Auth::id();
+
+                // 1. Tạo câu hỏi và truyền user_id vào
+                $questionId = $questionModel->create([
+                    'user_id' => $currentUserId, 
+                    'title'   => $title,
+                    'body'    => $body
+                ]);
+
+                // 2. Lưu câu trả lời (nếu có)
+                if (!empty($answerBody) && $questionId) {
+                    $answerModel->create([
+                        'question_id' => $questionId,
+                        'user_id'     => $currentUserId, // Admin là người trả lời
+                        'body'        => $answerBody
+                    ]);
+                }
+            }
+            $this->redirect('/whey_web/admin/faqs?status=created');
         }
     }
 
-    public function deleteContact(): void
+    // Xóa câu hỏi (FAQ)
+    public function deleteFaq(): void 
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'] ?? null;
-            $db = Database::connection();
-            $model = new ContactModel($db);
-            $model->deleteContact((int) $id);
-            $this->redirect('/whey_web/admin/contacts');
+        $id = $_GET['id'] ?? '';
+        
+        // 1. Kiểm tra xem có nhận được ID không
+        if (empty($id)) {
+            die("LỖI: Không nhận được ID trên đường dẫn (URL).");
+        }
+
+        try {
+            $questionModel = new Question();
+            
+            // 2. Thực hiện xóa và kiểm tra kết quả
+            $result = $questionModel->delete($id);
+            
+            if ($result) {
+                // Nếu xóa thành công thì mới chuyển hướng
+                $this->redirect('/whey_web/admin/faqs?status=deleted');
+            } else {
+                die("LỖI: Lệnh xóa chạy nhưng không có dòng nào trong Database bị xóa. (Có thể ID {$id} không tồn tại).");
+            }
+            
+        } catch (\PDOException $e) {
+            // 3. In ra lỗi nếu câu lệnh SQL bị sai
+            die("LỖI SQL: " . $e->getMessage());
+        } catch (\Throwable $th) {
+            // In ra lỗi nếu sai tên biến (ví dụ: dùng $this->db nhưng thực tế là $this->conn)
+            die("LỖI PHP: " . $th->getMessage());
         }
     }
-
 }
+

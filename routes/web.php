@@ -44,10 +44,10 @@ $router->post('/news/comment', 'NewsController@addComment');
 // Admin News & Comments routes
 $router->get('/admin', 'AdminController@dashboard');
 
-//Trang danh sách sản phẩm
+// Trang danh sách sản phẩm
 $router->get('/products', 'ProductController@index');
-//Trang chi tiết sản phẩm và Giỏ hàng
-$router->get('/products/detail', 'ProductController@show');
+// Trang chi tiết sản phẩm và Giỏ hàng
+$router->get('/product', 'ProductController@show');
 $router->get('/cart', 'CartController@index');
 $router->post('/cart/add', 'CartController@add');
 $router->post('/cart/update', 'CartController@update');
@@ -70,18 +70,27 @@ $router->post('/admin/products/delete', 'AdminProductController@delete');
 // --- QUẢN LÝ ĐƠN HÀNG ---
 $router->get('/admin/orders', 'AdminOrderController@index');
 $router->post('/admin/orders/update-status', 'AdminOrderController@updateStatus');
-$router->get('/admin/orders/detail/', 'AdminOrderController@detail');
+$router->get('/admin/orders/detail/{id}', 'AdminOrderController@detail');
 
+// --- QUẢN LÝ CÀI ĐẶT & LIÊN HỆ ---
 $router->get('/admin/settings', 'AdminController@settings');
 $router->post('/admin/update-settings', 'AdminController@updateSettings');
 $router->post('/admin/settings/update', 'AdminController@updateSettings');
+
+$router->get('/admin/settings/about', 'AdminController@editAbout');
+$router->post('/admin/settings/about', 'AdminController@editAbout');
+
 $router->get('/admin/contacts', 'AdminController@listContacts');
 $router->post('/admin/contacts/update-status', 'AdminController@updateContactStatus');
 $router->post('/admin/contacts/delete', 'AdminController@deleteContact');
+
 // Hiển thị trang liên hệ
 $router->get('/contact', 'HomeController@contact'); 
 // Xử lý gửi form
-$router->post('/contact/send', 'HomeController@submitContact');$router->get('/admin/news', 'AdminNewsController@newsList');
+$router->post('/contact/send', 'HomeController@submitContact');
+
+// --- QUẢN LÝ TIN TỨC & BÌNH LUẬN ---
+$router->get('/admin/news', 'AdminNewsController@newsList');
 $router->get('/admin/news/create', 'AdminNewsController@createForm');
 $router->post('/admin/news', 'AdminNewsController@store');
 $router->get('/admin/news/edit', 'AdminNewsController@editForm');
@@ -93,26 +102,23 @@ $router->post('/admin/comments/approve', 'AdminNewsController@approveComment');
 $router->post('/admin/comments/reject', 'AdminNewsController@rejectComment');
 $router->post('/admin/comments/delete', 'AdminNewsController@deleteComment');
 
-$router->get('/admin/users', 'AdminUserController@index');
-$router->get('/admin/users/add', 'AdminUserController@add');
-$router->post('/admin/users/add', 'AdminUserController@add');
-$router->get('/admin/users/edit', 'AdminUserController@edit');
-$router->post('/admin/users/edit', 'AdminUserController@edit');
-$router->get('/admin/users/delete', 'AdminUserController@delete');
+$router->get('/admin/users', 'AdminController@index');
+$router->get('/admin/users/add', 'AdminController@add');
+$router->post('/admin/users/add', 'AdminController@add');
+$router->get('/admin/users/edit', 'AdminController@edit');
+$router->post('/admin/users/edit', 'AdminController@edit');
+$router->get('/admin/users/delete', 'AdminController@delete');
 
-$router->get('/admin/settings/about', 'AdminController@editAbout');
-$router->post('/admin/settings/about', 'AdminController@editAbout');
-
-
+// --- QUẢN LÝ FAQs ---
 $router->get('/faq', 'HomeController@faq');
 $router->post('/faq/ask', 'HomeController@ask');
 
+$router->get('/admin/faqs/create', 'AdminController@createFaqForm');
+$router->post('/admin/faqs/store', 'AdminController@storeFaq');
+$router->get('/admin/faqs/delete', 'AdminController@deleteFaq');
+
 $router->get('/admin/faqs', 'AdminController@manageFaqs');
-$router->post('/admin/faqs/reply', 'AdminController@replyFaq');
-
-
 $router->get('/admin/faqs/reply', 'AdminController@showReplyForm'); 
-
-
 $router->post('/admin/faqs/reply', 'AdminController@replyFaq');
+
 ?>

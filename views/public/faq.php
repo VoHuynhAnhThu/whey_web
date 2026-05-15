@@ -27,8 +27,26 @@
                 <div>
                     <h4><?= htmlspecialchars($q['title']) ?></h4>
                     <small class="questioner-info">
-                        Bởi: <strong><?= htmlspecialchars($q['questioner_name'] ?? 'Khách vãng lai') ?></strong> 
-                        • <?= date('d/m/Y', strtotime($q['created_at'])) ?>
+                    Bởi: 
+                    <strong>
+                        <?php 
+                            if (empty($q['user_id'])) {
+                                echo 'Khách vãng lai';
+                            } elseif (isset($q['role']) && $q['role'] === 'admin') {
+
+                                echo '<span style="color: #e74c3c;">Quản trị viên</span>';
+                            } else {
+                                if (!empty($q['email'])) {
+                                    $emailParts = explode('@', $q['email']);
+                                    $customerName = $emailParts[0]; 
+                                } else {
+                                    $customerName = 'Khách hàng';
+                                }
+                                
+                                echo htmlspecialchars($customerName); 
+                            }
+                        ?>
+                    </strong>
                     </small>
                 </div>
             </div>

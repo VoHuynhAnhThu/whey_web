@@ -56,7 +56,7 @@ class HomeController extends Controller
         $data = [
             'title'   => $_POST['title'] ?? '',
             'body'    => $_POST['body'] ?? '',
-            'user_id' => $currentUser ? $currentUser['id'] : null 
+            'user_id' => Auth::id(), 
         ];
 
         if ($questionModel->create($data)) {
